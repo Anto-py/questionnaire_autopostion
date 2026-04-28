@@ -2193,16 +2193,10 @@ FORMAT DE SORTIE
     /* ==========================================================
        INIT
        ========================================================== */
-    // Détection Netlify : hostname immédiat + confirmation via probe
+    // Détection Netlify par hostname — pas de probe pour éviter les re-rendus
     if (window.location.hostname.endsWith('.netlify.app') || window.location.hostname.endsWith('.netlify.com')) {
       state.netlifyMode = true;
     }
-    fetch('/.netlify/functions/proxy', { method: 'OPTIONS' })
-      .then(r => {
-        const ok = r.status === 204 || r.status === 200;
-        if (ok !== state.netlifyMode) { state.netlifyMode = ok; render(); }
-      })
-      .catch(() => { if (state.netlifyMode) { state.netlifyMode = false; render(); } });
 
     render();
   </script>

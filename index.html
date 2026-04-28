@@ -2193,10 +2193,16 @@ FORMAT DE SORTIE
     /* ==========================================================
        INIT
        ========================================================== */
-    // Détection Netlify : sonde la fonction proxy au démarrage (204 = proxy actif)
+    // Détection Netlify : hostname immédiat + confirmation via probe
+    if (window.location.hostname.endsWith('.netlify.app') || window.location.hostname.endsWith('.netlify.com')) {
+      state.netlifyMode = true;
+    }
     fetch('/.netlify/functions/proxy', { method: 'OPTIONS' })
-      .then(r => { if (r.status === 204) { state.netlifyMode = true; render(); } })
-      .catch(() => { });
+      .then(r => {
+        const ok = r.status === 204 || r.status === 200;
+        if (ok !== state.netlifyMode) { state.netlifyMode = ok; render(); }
+      })
+      .catch(() => { if (state.netlifyMode) { state.netlifyMode = false; render(); } });
 
     render();
   </script>

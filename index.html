@@ -1544,7 +1544,7 @@ FORMAT DE SORTIE
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ url: apiUrl, headers: apiHeaders, body: apiBody })
         });
-        if (r.status !== 404 && r.status !== 0) {
+        if (r.status !== 404 && r.status !== 405 && r.status !== 0) {
           if (!r.ok) {
             const e = await r.json().catch(() => ({}));
             throw new Error(e?.error?.message || `Proxy local ${r.status}`);
@@ -1553,7 +1553,7 @@ FORMAT DE SORTIE
           return isAnthropic ? d.content[0].text : d.choices[0].message.content;
         }
       } catch (err) {
-        if (!err.message.includes('Failed to fetch') && !err.message.includes('404')) throw err;
+        if (!err.message.includes('Failed to fetch') && !err.message.includes('404') && !err.message.includes('405')) throw err;
       }
 
       // — Mode 3 : appel direct (fallback) —

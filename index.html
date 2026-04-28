@@ -1502,8 +1502,8 @@ FORMAT DE SORTIE
             userContent: JSON.stringify(userPayload)
           })
         });
-        // 404 = pas sur Netlify → on passe au mode suivant
-        if (r.status === 404) throw new Error('netlify_unavailable');
+        // 404 ou 405 = pas sur Netlify → on passe au mode suivant
+        if (r.status === 404 || r.status === 405) throw new Error('netlify_unavailable');
         if (!r.ok) {
           const e = await r.json().catch(() => ({}));
           throw new Error(e?.error?.message || `Netlify proxy ${r.status}`);
@@ -2193,9 +2193,9 @@ FORMAT DE SORTIE
     /* ==========================================================
        INIT
        ========================================================== */
-    // Détection Netlify : sonde la fonction proxy au démarrage
+    // Détection Netlify : sonde la fonction proxy au démarrage (204 = proxy actif)
     fetch('/.netlify/functions/proxy', { method: 'OPTIONS' })
-      .then(r => { if (r.status !== 404) { state.netlifyMode = true; render(); } })
+      .then(r => { if (r.status === 204) { state.netlifyMode = true; render(); } })
       .catch(() => { });
 
     render();

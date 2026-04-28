@@ -1904,7 +1904,7 @@ FORMAT DE SORTIE
         ta.addEventListener('input', () => { state.boussole[k] = ta.value; });
       });
       document.getElementById('btn-generate').addEventListener('click', () => {
-        if (!state.apiKey && !state.sansIA) {
+        if (!state.apiKey && !state.sansIA && !state.netlifyMode) {
           alert("Aucune clé API n'est configurée. Renseignez-en une à l'écran d'accueil ou demandez au formateur de pré-configurer le fichier.");
           return;
         }
@@ -1955,7 +1955,7 @@ FORMAT DE SORTIE
         return;
       }
 
-      if (!state.apiKey) {
+      if (!state.apiKey && !state.netlifyMode) {
         clearInterval(interval);
         state.rapportError = "Aucune clé API configurée. Revenez à l'accueil et renseignez une clé, ou cochez « Sans analyse IA ».";
         setEcran(11);

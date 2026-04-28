@@ -1,517 +1,869 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quel utilisateur d'IA es-tu ? — Autopositionnement</title>
-<style>
-:root {
-  --retro-teal:   #7ec0c8;
-  --retro-orange: #ea4e86;
-  --retro-jaune:  #efb243;
-  --retro-ink:    #3d3938;
-  --retro-paper:  #f5f5f5;
-}
-* { box-sizing: border-box; transition: border-color 0.2s, background-color 0.2s, color 0.2s; }
-html, body { margin: 0; padding: 0; }
-body {
-  font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
-  color: var(--retro-ink);
-  background: var(--retro-ink) url('background.jpg') center center / cover no-repeat fixed;
-  padding: 16px;
-  min-height: 100vh;
-  line-height: 1.5;
-}
-.page-frame {
-  background: var(--retro-paper);
-  border: 4px solid var(--retro-orange);
-  border-radius: 32px 8px 24px 12px;
-  position: relative;
-  min-height: calc(100vh - 32px);
-  padding: 40px;
-  max-width: 860px;
-  margin: 0 auto;
-}
-h1, h2, h3, .titre {
-  font-family: Impact, 'Arial Black', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--retro-teal);
-  margin: 0 0 12px;
-}
-h1 { font-size: 32px; line-height: 1.15; }
-h2 { font-size: 22px; }
-.surtitre {
-  font-family: Impact, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: var(--retro-orange);
-  font-size: 13px;
-  margin-bottom: 8px;
-}
-.intro-text { font-size: 15px; line-height: 1.6; color: rgba(13,22,23,0.85); }
-.ecran { animation: fadeSlideIn 0.35s ease both; }
-@keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-.hidden { display: none !important; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quel utilisateur d'IA es-tu ? — Autopositionnement</title>
+  <style>
+    :root {
+      --retro-teal: #7ec0c8;
+      --retro-orange: #ea4e86;
+      --retro-jaune: #efb243;
+      --retro-ink: #3d3938;
+      --retro-paper: #f5f5f5;
+    }
 
-/* Progress bar */
-.progress-bar-container {
-  height: 6px;
-  background: rgba(18, 118, 118, 0.15);
-  border-radius: 3px;
-  margin-bottom: 16px;
-}
-.progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--retro-teal), var(--retro-orange));
-  border-radius: 3px;
-  transition: width 0.4s ease;
-  width: 0%;
-}
-.progress-label {
-  font-family: Impact, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-size: 11px;
-  color: var(--retro-teal);
-  margin-bottom: 24px;
-  text-align: right;
-}
+    * {
+      box-sizing: border-box;
+      transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+    }
 
-/* Section header */
-.section-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 28px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid var(--retro-teal);
-}
-.section-emoji { font-size: 36px; flex-shrink: 0; }
-.section-titre { margin: 0; font-size: 22px; }
-.section-sous-titre {
-  font-size: 13px;
-  color: rgba(13, 22, 23, 0.6);
-  margin: 4px 0 0;
-  font-style: italic;
-}
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
 
-/* Separator */
-.separateur {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 24px 0;
-  color: var(--retro-teal);
-  font-size: 20px;
-}
-.separateur::before, .separateur::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--retro-teal), transparent);
-}
+    body {
+      font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+      color: var(--retro-ink);
+      background: var(--retro-ink) url('background.jpg') center center / cover no-repeat fixed;
+      padding: 16px;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
 
-/* Question card */
-.carte-question {
-  background: var(--retro-paper);
-  border: 3px solid var(--retro-teal);
-  border-radius: 24px 8px 24px 8px;
-  box-shadow: inset 0 0 0 1px rgba(228, 99, 46, 0.15);
-  padding: 24px 28px;
-  margin-bottom: 20px;
-}
-.q-num {
-  display: inline-block;
-  font-family: Impact, sans-serif;
-  background: var(--retro-orange);
-  color: var(--retro-paper);
-  padding: 3px 10px;
-  border-radius: 12px 4px 12px 4px;
-  font-size: 13px;
-  letter-spacing: 0.1em;
-  margin-right: 8px;
-}
-.q-text { font-weight: 600; margin: 0 0 16px; font-size: 16px; line-height: 1.45; }
-.q-help { font-size: 13px; color: rgba(13,22,23,0.65); font-style: italic; margin: -8px 0 14px; }
+    .page-frame {
+      background: var(--retro-paper);
+      border: 4px solid var(--retro-orange);
+      border-radius: 32px 8px 24px 12px;
+      position: relative;
+      min-height: calc(100vh - 32px);
+      padding: 40px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
 
-/* Options */
-.options { display: flex; flex-direction: column; gap: 8px; }
-.option {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  padding: 12px 16px;
-  border: 2px solid transparent;
-  border-radius: 12px 4px 12px 4px;
-  cursor: pointer;
-  background: rgba(18,118,118,0.03);
-}
-.option:hover { border-color: var(--retro-jaune); background: rgba(227, 165, 53, 0.08); }
-.option.selected { border-color: var(--retro-teal); background: rgba(18, 118, 118, 0.08); }
-.option-lettre {
-  min-width: 28px;
-  height: 28px;
-  background: var(--retro-teal);
-  color: var(--retro-paper);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: Impact, sans-serif;
-  font-size: 13px;
-  flex-shrink: 0;
-}
-.option.selected .option-lettre { background: var(--retro-orange); }
-.option-text { font-size: 14.5px; line-height: 1.45; }
-.option input { display: none; }
+    h1,
+    h2,
+    h3,
+    .titre {
+      font-family: Impact, 'Arial Black', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--retro-teal);
+      margin: 0 0 12px;
+    }
 
-/* Likert */
-.likert-container { display: flex; gap: 12px; justify-content: center; padding: 12px 0; flex-wrap: wrap; }
-.likert-option {
-  width: 52px; height: 52px;
-  border: 3px solid var(--retro-teal);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: Impact, sans-serif;
-  font-size: 20px;
-  cursor: pointer;
-  color: var(--retro-teal);
-  background: var(--retro-paper);
-}
-.likert-option:hover { background: var(--retro-jaune); border-color: var(--retro-jaune); color: var(--retro-ink); }
-.likert-option.selected { background: var(--retro-teal); color: var(--retro-paper); }
-.likert-labels { display: flex; justify-content: space-between; font-size: 12px; color: rgba(13,22,23,0.6); padding: 4px 8px; font-style: italic; }
+    h1 {
+      font-size: 32px;
+      line-height: 1.15;
+    }
 
-/* Textarea */
-textarea {
-  width: 100%;
-  min-height: 90px;
-  border: 2px solid var(--retro-teal);
-  border-radius: 12px 4px 12px 4px;
-  padding: 12px 14px;
-  font-family: inherit;
-  font-size: 14.5px;
-  background: var(--retro-paper);
-  color: var(--retro-ink);
-  resize: vertical;
-  line-height: 1.5;
-}
-textarea:focus { outline: none; border-color: var(--retro-orange); }
+    h2 {
+      font-size: 22px;
+    }
 
-/* Buttons */
-.btn-primary {
-  display: inline-flex;
-  align-items: stretch;
-  border: 3px solid var(--retro-teal);
-  border-radius: 50px;
-  overflow: hidden;
-  cursor: pointer;
-  font-family: Impact, 'Arial Black', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  background: none;
-  padding: 0;
-  margin-top: 16px;
-}
-.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
-.btn-primary .btn-label {
-  background: var(--retro-jaune);
-  color: var(--retro-ink);
-  padding: 12px 20px;
-  font-size: 14px;
-  display: flex; align-items: center;
-}
-.btn-primary .btn-icon {
-  background: var(--retro-orange);
-  color: var(--retro-paper);
-  padding: 12px 18px;
-  font-size: 18px;
-  display: flex; align-items: center;
-}
-.btn-primary:hover:not(:disabled) .btn-label { background: var(--retro-orange); color: var(--retro-paper); }
-.btn-primary:hover:not(:disabled) .btn-icon { background: var(--retro-teal); }
+    .surtitre {
+      font-family: Impact, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--retro-orange);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
 
-.btn-secondary {
-  display: inline-block;
-  border: 2px solid var(--retro-teal);
-  background: transparent;
-  color: var(--retro-teal);
-  padding: 10px 18px;
-  border-radius: 50px;
-  cursor: pointer;
-  font-family: Impact, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 13px;
-  margin: 4px;
-}
-.btn-secondary:hover { background: var(--retro-teal); color: var(--retro-paper); }
+    .intro-text {
+      font-size: 15px;
+      line-height: 1.6;
+      color: rgba(13, 22, 23, 0.85);
+    }
 
-.button-row { display: flex; justify-content: flex-end; align-items: center; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+    .ecran {
+      animation: fadeSlideIn 0.35s ease both;
+    }
 
-/* Consent box */
-.consent-box {
-  background: rgba(18,118,118,0.06);
-  border: 2px dashed var(--retro-teal);
-  border-radius: 16px 4px 16px 4px;
-  padding: 24px;
-  margin: 24px 0;
-  font-size: 14px;
-  line-height: 1.6;
-}
-.consent-box ul { margin: 8px 0; padding-left: 20px; }
-.consent-box li { margin-bottom: 6px; }
-.consent-box strong { color: var(--retro-teal); }
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
 
-.checkbox-row {
-  display: flex; align-items: flex-start; gap: 12px;
-  margin: 18px 0;
-  cursor: pointer;
-  font-size: 14.5px;
-  user-select: none;
-}
-.checkbox-row input { display: none; }
-.checkbox-custom {
-  width: 22px; height: 22px;
-  border: 2.5px solid var(--retro-teal);
-  border-radius: 6px 2px 6px 2px;
-  flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--retro-paper);
-}
-.checkbox-row input:checked + .checkbox-custom {
-  background: var(--retro-orange);
-  border-color: var(--retro-orange);
-}
-.checkbox-row input:checked + .checkbox-custom::after {
-  content: '✓';
-  color: var(--retro-paper);
-  font-weight: bold;
-  font-size: 15px;
-}
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-/* Loader */
-.loader-container {
-  display: flex; flex-direction: column; align-items: center; gap: 24px;
-  padding: 80px 0;
-}
-.loader-orbe {
-  width: 72px; height: 72px;
-  border: 4px solid var(--retro-teal);
-  border-top-color: var(--retro-orange);
-  border-radius: 50%;
-  animation: rotation 1s linear infinite;
-}
-@keyframes rotation { to { transform: rotate(360deg); } }
-.loader-texte {
-  font-family: Impact, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--retro-teal);
-  font-size: 14px;
-  text-align: center;
-  min-height: 22px;
-}
+    .hidden {
+      display: none !important;
+    }
 
-/* Report screen */
-.rapport-columns {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 32px;
-  margin-top: 16px;
-}
-.col-gauche { display: flex; flex-direction: column; gap: 24px; }
+    /* Progress bar */
+    .progress-bar-container {
+      height: 6px;
+      background: rgba(18, 118, 118, 0.15);
+      border-radius: 3px;
+      margin-bottom: 16px;
+    }
 
-.scores-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
-.score-row { display: flex; flex-direction: column; gap: 4px; }
-.score-row-head { display: flex; justify-content: space-between; font-size: 13px; }
-.score-row-head .nom { font-family: Impact, sans-serif; text-transform: uppercase; letter-spacing: 0.08em; color: var(--retro-teal); }
-.score-row-head .val { font-family: Impact, sans-serif; color: var(--retro-orange); }
-.score-bar-bg { height: 8px; background: rgba(18,118,118,0.12); border-radius: 4px; overflow: hidden; }
-.score-bar-fill { height: 100%; background: linear-gradient(90deg, var(--retro-teal), var(--retro-orange)); border-radius: 4px; }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--retro-teal), var(--retro-orange));
+      border-radius: 3px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
 
-.badges { display: flex; flex-direction: column; gap: 12px; }
-.badge {
-  padding: 12px 16px;
-  border-radius: 16px 4px 16px 4px;
-  font-size: 13px;
-  border: 2px solid;
-}
-.badge-titre {
-  font-family: Impact, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  display: block;
-  margin-bottom: 4px;
-  font-size: 11px;
-}
-.badge-dom { border-color: var(--retro-teal); background: rgba(18,118,118,0.08); }
-.badge-dom .badge-titre { color: var(--retro-teal); }
-.badge-ang { border-color: var(--retro-orange); background: rgba(228,99,46,0.08); }
-.badge-ang .badge-titre { color: var(--retro-orange); }
+    .progress-label {
+      font-family: Impact, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 11px;
+      color: var(--retro-teal);
+      margin-bottom: 24px;
+      text-align: right;
+    }
 
-.rapport-container {
-  background: var(--retro-ink);
-  color: var(--retro-paper);
-  border-radius: 24px 8px 24px 8px;
-  padding: 32px 36px;
-  border: 2px solid var(--retro-orange);
-  max-height: 70vh;
-  overflow-y: auto;
-}
-.rapport-container h2 {
-  font-family: Impact, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--retro-jaune);
-  font-size: 17px;
-  margin: 24px 0 8px;
-  border-bottom: 1px solid rgba(227, 165, 53, 0.3);
-  padding-bottom: 6px;
-}
-.rapport-container h2:first-child { margin-top: 0; }
-.rapport-container h3 {
-  color: var(--retro-teal);
-  font-family: Impact, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 14px;
-  margin: 16px 0 6px;
-}
-.rapport-container p {
-  line-height: 1.7;
-  color: rgba(242, 239, 230, 0.92);
-  margin: 0 0 12px;
-  font-size: 14.5px;
-}
-.rapport-container ul { padding-left: 20px; margin: 8px 0 14px; }
-.rapport-container li { margin-bottom: 6px; line-height: 1.6; color: rgba(242, 239, 230, 0.92); font-size: 14.5px; }
-.rapport-container strong { color: var(--retro-jaune); }
-.rapport-container em { color: rgba(242, 239, 230, 0.75); }
+    /* Section header */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--retro-teal);
+    }
 
-/* SVG radar */
-.radar-wrap { display: flex; justify-content: center; }
-.radar-wrap svg { width: 100%; max-width: 360px; height: auto; }
-.radar-label {
-  font-family: Impact, sans-serif;
-  text-transform: uppercase;
-  font-size: 9px;
-  letter-spacing: 0.08em;
-  fill: var(--retro-teal);
-}
+    .section-emoji {
+      font-size: 36px;
+      flex-shrink: 0;
+    }
 
-/* Error */
-.error-box {
-  background: rgba(228,99,46,0.15);
-  border: 2px solid var(--retro-orange);
-  border-radius: 12px 4px 12px 4px;
-  padding: 16px 20px;
-  margin: 0;
-  color: var(--retro-paper);
-  font-size: 14px;
-  line-height: 1.6;
-}
+    .section-titre {
+      margin: 0;
+      font-size: 22px;
+    }
 
-/* API key block */
-.api-key-block {
-  background: rgba(227, 165, 53, 0.12);
-  border: 2px solid var(--retro-jaune);
-  border-radius: 12px 4px 12px 4px;
-  padding: 16px 20px;
-  margin: 20px 0;
-  font-size: 13px;
-}
-.api-key-block label { font-family: Impact, sans-serif; text-transform: uppercase; letter-spacing: 0.08em; color: var(--retro-teal); display: block; margin-bottom: 6px; font-size: 12px; }
-.api-key-block input {
-  width: 100%;
-  border: 2px solid var(--retro-teal);
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-family: monospace;
-  font-size: 13px;
-  background: var(--retro-paper);
-}
+    .section-sous-titre {
+      font-size: 13px;
+      color: rgba(13, 22, 23, 0.6);
+      margin: 4px 0 0;
+      font-style: italic;
+    }
 
-/* Print */
-@media print {
-  body { background: white; padding: 0; }
-  .page-frame { border: none; box-shadow: none; padding: 0; }
-  .no-print { display: none !important; }
-  .rapport-container { background: white; color: black; border: 2px solid var(--retro-teal); max-height: none; overflow: visible; }
-  .rapport-container h2 { color: var(--retro-teal); border-color: var(--retro-teal); }
-  .rapport-container p, .rapport-container li { color: black; }
-  .rapport-container strong { color: var(--retro-orange); }
-  .rapport-columns { grid-template-columns: 1fr; }
-}
+    /* Separator */
+    .separateur {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 24px 0;
+      color: var(--retro-teal);
+      font-size: 20px;
+    }
 
-@media (max-width: 768px) {
-  body { padding: 8px; }
-  .page-frame { padding: 22px 18px; min-height: calc(100vh - 16px); }
-  h1 { font-size: 24px; }
-  .rapport-columns { grid-template-columns: 1fr; gap: 20px; }
-  .likert-option { width: 44px; height: 44px; font-size: 16px; }
-  .section-header { gap: 12px; }
-  .section-emoji { font-size: 28px; }
-  .section-titre { font-size: 18px; }
-  .carte-question { padding: 18px 18px; }
-}
-</style>
+    .separateur::before,
+    .separateur::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--retro-teal), transparent);
+    }
+
+    /* Question card */
+    .carte-question {
+      background: var(--retro-paper);
+      border: 3px solid var(--retro-teal);
+      border-radius: 24px 8px 24px 8px;
+      box-shadow: inset 0 0 0 1px rgba(228, 99, 46, 0.15);
+      padding: 24px 28px;
+      margin-bottom: 20px;
+    }
+
+    .q-num {
+      display: inline-block;
+      font-family: Impact, sans-serif;
+      background: var(--retro-orange);
+      color: var(--retro-paper);
+      padding: 3px 10px;
+      border-radius: 12px 4px 12px 4px;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      margin-right: 8px;
+    }
+
+    .q-text {
+      font-weight: 600;
+      margin: 0 0 16px;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .q-help {
+      font-size: 13px;
+      color: rgba(13, 22, 23, 0.65);
+      font-style: italic;
+      margin: -8px 0 14px;
+    }
+
+    /* Options */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 16px;
+      border: 2px solid transparent;
+      border-radius: 12px 4px 12px 4px;
+      cursor: pointer;
+      background: rgba(18, 118, 118, 0.03);
+    }
+
+    .option:hover {
+      border-color: var(--retro-jaune);
+      background: rgba(227, 165, 53, 0.08);
+    }
+
+    .option.selected {
+      border-color: var(--retro-teal);
+      background: rgba(18, 118, 118, 0.08);
+    }
+
+    .option-lettre {
+      min-width: 28px;
+      height: 28px;
+      background: var(--retro-teal);
+      color: var(--retro-paper);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Impact, sans-serif;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .option.selected .option-lettre {
+      background: var(--retro-orange);
+    }
+
+    .option-text {
+      font-size: 14.5px;
+      line-height: 1.45;
+    }
+
+    .option input {
+      display: none;
+    }
+
+    /* Likert */
+    .likert-container {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      padding: 12px 0;
+      flex-wrap: wrap;
+    }
+
+    .likert-option {
+      width: 52px;
+      height: 52px;
+      border: 3px solid var(--retro-teal);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Impact, sans-serif;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--retro-teal);
+      background: var(--retro-paper);
+    }
+
+    .likert-option:hover {
+      background: var(--retro-jaune);
+      border-color: var(--retro-jaune);
+      color: var(--retro-ink);
+    }
+
+    .likert-option.selected {
+      background: var(--retro-teal);
+      color: var(--retro-paper);
+    }
+
+    .likert-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: rgba(13, 22, 23, 0.6);
+      padding: 4px 8px;
+      font-style: italic;
+    }
+
+    /* Textarea */
+    textarea {
+      width: 100%;
+      min-height: 90px;
+      border: 2px solid var(--retro-teal);
+      border-radius: 12px 4px 12px 4px;
+      padding: 12px 14px;
+      font-family: inherit;
+      font-size: 14.5px;
+      background: var(--retro-paper);
+      color: var(--retro-ink);
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--retro-orange);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      display: inline-flex;
+      align-items: stretch;
+      border: 3px solid var(--retro-teal);
+      border-radius: 50px;
+      overflow: hidden;
+      cursor: pointer;
+      font-family: Impact, 'Arial Black', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: none;
+      padding: 0;
+      margin-top: 16px;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-primary .btn-label {
+      background: var(--retro-jaune);
+      color: var(--retro-ink);
+      padding: 12px 20px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+
+    .btn-primary .btn-icon {
+      background: var(--retro-orange);
+      color: var(--retro-paper);
+      padding: 12px 18px;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+    }
+
+    .btn-primary:hover:not(:disabled) .btn-label {
+      background: var(--retro-orange);
+      color: var(--retro-paper);
+    }
+
+    .btn-primary:hover:not(:disabled) .btn-icon {
+      background: var(--retro-teal);
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      border: 2px solid var(--retro-teal);
+      background: transparent;
+      color: var(--retro-teal);
+      padding: 10px 18px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-family: Impact, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 13px;
+      margin: 4px;
+    }
+
+    .btn-secondary:hover {
+      background: var(--retro-teal);
+      color: var(--retro-paper);
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    /* Consent box */
+    .consent-box {
+      background: rgba(18, 118, 118, 0.06);
+      border: 2px dashed var(--retro-teal);
+      border-radius: 16px 4px 16px 4px;
+      padding: 24px;
+      margin: 24px 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .consent-box ul {
+      margin: 8px 0;
+      padding-left: 20px;
+    }
+
+    .consent-box li {
+      margin-bottom: 6px;
+    }
+
+    .consent-box strong {
+      color: var(--retro-teal);
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin: 18px 0;
+      cursor: pointer;
+      font-size: 14.5px;
+      user-select: none;
+    }
+
+    .checkbox-row input {
+      display: none;
+    }
+
+    .checkbox-custom {
+      width: 22px;
+      height: 22px;
+      border: 2.5px solid var(--retro-teal);
+      border-radius: 6px 2px 6px 2px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--retro-paper);
+    }
+
+    .checkbox-row input:checked+.checkbox-custom {
+      background: var(--retro-orange);
+      border-color: var(--retro-orange);
+    }
+
+    .checkbox-row input:checked+.checkbox-custom::after {
+      content: '✓';
+      color: var(--retro-paper);
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    /* Loader */
+    .loader-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      padding: 80px 0;
+    }
+
+    .loader-orbe {
+      width: 72px;
+      height: 72px;
+      border: 4px solid var(--retro-teal);
+      border-top-color: var(--retro-orange);
+      border-radius: 50%;
+      animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loader-texte {
+      font-family: Impact, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--retro-teal);
+      font-size: 14px;
+      text-align: center;
+      min-height: 22px;
+    }
+
+    /* Report screen */
+    .rapport-columns {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 32px;
+      margin-top: 16px;
+    }
+
+    .col-gauche {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .scores-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .score-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .score-row-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+
+    .score-row-head .nom {
+      font-family: Impact, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--retro-teal);
+    }
+
+    .score-row-head .val {
+      font-family: Impact, sans-serif;
+      color: var(--retro-orange);
+    }
+
+    .score-bar-bg {
+      height: 8px;
+      background: rgba(18, 118, 118, 0.12);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--retro-teal), var(--retro-orange));
+      border-radius: 4px;
+    }
+
+    .badges {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .badge {
+      padding: 12px 16px;
+      border-radius: 16px 4px 16px 4px;
+      font-size: 13px;
+      border: 2px solid;
+    }
+
+    .badge-titre {
+      font-family: Impact, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      display: block;
+      margin-bottom: 4px;
+      font-size: 11px;
+    }
+
+    .badge-dom {
+      border-color: var(--retro-teal);
+      background: rgba(18, 118, 118, 0.08);
+    }
+
+    .badge-dom .badge-titre {
+      color: var(--retro-teal);
+    }
+
+    .badge-ang {
+      border-color: var(--retro-orange);
+      background: rgba(228, 99, 46, 0.08);
+    }
+
+    .badge-ang .badge-titre {
+      color: var(--retro-orange);
+    }
+
+    .rapport-container {
+      background: var(--retro-ink);
+      color: var(--retro-paper);
+      border-radius: 24px 8px 24px 8px;
+      padding: 32px 36px;
+      border: 2px solid var(--retro-orange);
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .rapport-container h2 {
+      font-family: Impact, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--retro-jaune);
+      font-size: 17px;
+      margin: 24px 0 8px;
+      border-bottom: 1px solid rgba(227, 165, 53, 0.3);
+      padding-bottom: 6px;
+    }
+
+    .rapport-container h2:first-child {
+      margin-top: 0;
+    }
+
+    .rapport-container h3 {
+      color: var(--retro-teal);
+      font-family: Impact, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 14px;
+      margin: 16px 0 6px;
+    }
+
+    .rapport-container p {
+      line-height: 1.7;
+      color: rgba(242, 239, 230, 0.92);
+      margin: 0 0 12px;
+      font-size: 14.5px;
+    }
+
+    .rapport-container ul {
+      padding-left: 20px;
+      margin: 8px 0 14px;
+    }
+
+    .rapport-container li {
+      margin-bottom: 6px;
+      line-height: 1.6;
+      color: rgba(242, 239, 230, 0.92);
+      font-size: 14.5px;
+    }
+
+    .rapport-container strong {
+      color: var(--retro-jaune);
+    }
+
+    .rapport-container em {
+      color: rgba(242, 239, 230, 0.75);
+    }
+
+    /* SVG radar */
+    .radar-wrap {
+      display: flex;
+      justify-content: center;
+    }
+
+    .radar-wrap svg {
+      width: 100%;
+      max-width: 360px;
+      height: auto;
+    }
+
+    .radar-label {
+      font-family: Impact, sans-serif;
+      text-transform: uppercase;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      fill: var(--retro-teal);
+    }
+
+    /* Error */
+    .error-box {
+      background: rgba(228, 99, 46, 0.15);
+      border: 2px solid var(--retro-orange);
+      border-radius: 12px 4px 12px 4px;
+      padding: 16px 20px;
+      margin: 0;
+      color: var(--retro-paper);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* API key block */
+    .api-key-block {
+      background: rgba(227, 165, 53, 0.12);
+      border: 2px solid var(--retro-jaune);
+      border-radius: 12px 4px 12px 4px;
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+
+    .api-key-block label {
+      font-family: Impact, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--retro-teal);
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+
+    .api-key-block input {
+      width: 100%;
+      border: 2px solid var(--retro-teal);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-family: monospace;
+      font-size: 13px;
+      background: var(--retro-paper);
+    }
+
+    /* Print */
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+
+      .page-frame {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .rapport-container {
+        background: white;
+        color: black;
+        border: 2px solid var(--retro-teal);
+        max-height: none;
+        overflow: visible;
+      }
+
+      .rapport-container h2 {
+        color: var(--retro-teal);
+        border-color: var(--retro-teal);
+      }
+
+      .rapport-container p,
+      .rapport-container li {
+        color: black;
+      }
+
+      .rapport-container strong {
+        color: var(--retro-orange);
+      }
+
+      .rapport-columns {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 8px;
+      }
+
+      .page-frame {
+        padding: 22px 18px;
+        min-height: calc(100vh - 16px);
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .rapport-columns {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .likert-option {
+        width: 44px;
+        height: 44px;
+        font-size: 16px;
+      }
+
+      .section-header {
+        gap: 12px;
+      }
+
+      .section-emoji {
+        font-size: 28px;
+      }
+
+      .section-titre {
+        font-size: 18px;
+      }
+
+      .carte-question {
+        padding: 18px 18px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="page-frame">
-  <div id="app"></div>
-</div>
+  <div class="page-frame">
+    <div id="app"></div>
+  </div>
 
-<script>
-/* ==========================================================
-   CONFIGURATION
-   ========================================================== */
-const CONFIG = {
-  API_MAX_TOKENS: 1200,
-  API_TEMPERATURE: 0.4,
-  API_KEY: '',           // Pré-remplir pour éviter la saisie aux participants
-  API_PROVIDER: '',      // 'anthropic' | 'openai' | 'compatible' — laisser vide pour détection auto
-  API_MODEL: '',         // Laisser vide pour utiliser le modèle par défaut du fournisseur
-  API_CUSTOM_URL: '',    // Uniquement pour 'compatible' (ex: https://api.mistral.ai/v1)
-  NOM_FORMATEUR: '[À COMPLÉTER]',
-  EMAIL_CONTACT: '[À COMPLÉTER]',
-  VERSION: '2.0',
-  DATE: '2025'
-};
+  <script>
+    /* ==========================================================
+       CONFIGURATION
+       ========================================================== */
+    const CONFIG = {
+      API_MAX_TOKENS: 1200,
+      API_TEMPERATURE: 0.4,
+      API_KEY: '',           // Pré-remplir pour éviter la saisie aux participants
+      API_PROVIDER: '',      // 'anthropic' | 'openai' | 'compatible' — laisser vide pour détection auto
+      API_MODEL: '',         // Laisser vide pour utiliser le modèle par défaut du fournisseur
+      API_CUSTOM_URL: '',    // Uniquement pour 'compatible' (ex: https://api.mistral.ai/v1)
+      NOM_FORMATEUR: '[À COMPLÉTER]',
+      EMAIL_CONTACT: '[À COMPLÉTER]',
+      VERSION: '2.0',
+      DATE: '2025'
+    };
 
-/* Fournisseurs supportés */
-const PROVIDERS = {
-  anthropic: {
-    label: 'Anthropic (Claude)',
-    url: 'https://api.anthropic.com/v1/messages',
-    defaultModel: 'claude-sonnet-4-6',
-    placeholder: 'sk-ant-...'
-  },
-  openai: {
-    label: 'OpenAI (GPT)',
-    url: 'https://api.openai.com/v1/chat/completions',
-    defaultModel: 'gpt-4o',
-    placeholder: 'sk-...'
-  },
-  compatible: {
-    label: 'Compatible OpenAI (Mistral, Groq, Ollama…)',
-    url: '',   // à saisir
-    defaultModel: '',
-    placeholder: 'Votre clé API'
-  }
-};
+    /* Fournisseurs supportés */
+    const PROVIDERS = {
+      anthropic: {
+        label: 'Anthropic (Claude)',
+        url: 'https://api.anthropic.com/v1/messages',
+        defaultModel: 'claude-sonnet-4-6',
+        placeholder: 'sk-ant-...'
+      },
+      openai: {
+        label: 'OpenAI (GPT)',
+        url: 'https://api.openai.com/v1/chat/completions',
+        defaultModel: 'gpt-4o',
+        placeholder: 'sk-...'
+      },
+      compatible: {
+        label: 'Compatible OpenAI (Mistral, Groq, Ollama…)',
+        url: '',   // à saisir
+        defaultModel: '',
+        placeholder: 'Votre clé API'
+      }
+    };
 
-function detecterProvider(key) {
-  if (!key) return 'anthropic';
-  if (key.startsWith('sk-ant-')) return 'anthropic';
-  if (key.startsWith('sk-') && !key.startsWith('sk-ant-')) return 'openai';
-  return 'compatible';
-}
+    function detecterProvider(key) {
+      if (!key) return 'anthropic';
+      if (key.startsWith('sk-ant-')) return 'anthropic';
+      if (key.startsWith('sk-') && !key.startsWith('sk-ant-')) return 'openai';
+      return 'compatible';
+    }
 
-/* ==========================================================
-   PROMPT SYSTÈME (copié intégralement du fichier de référence)
-   ========================================================== */
-const PROMPT_SYSTEME_INDIVIDUEL = `Tu es un assistant de formation spécialisé dans l'accompagnement professionnel des enseignants du secondaire en Fédération Wallonie-Bruxelles. Tu génères des rapports d'autopositionnement individuels à partir des résultats d'un questionnaire sur les enjeux de l'intelligence artificielle en éducation.
+    /* ==========================================================
+       PROMPT SYSTÈME (copié intégralement du fichier de référence)
+       ========================================================== */
+    const PROMPT_SYSTEME_INDIVIDUEL = `Tu es un assistant de formation spécialisé dans l'accompagnement professionnel des enseignants du secondaire en Fédération Wallonie-Bruxelles. Tu génères des rapports d'autopositionnement individuels à partir des résultats d'un questionnaire sur les enjeux de l'intelligence artificielle en éducation.
 
 ---
 
@@ -610,632 +962,710 @@ FORMAT DE SORTIE
 - Ne pas inclure de scores numériques dans le texte du rapport
 - Ne pas mentionner le nom de l'outil ou du questionnaire dans le corps du rapport`;
 
-/* ==========================================================
-   STRUCTURE DU QUESTIONNAIRE
-   ========================================================== */
-const ENJEUX = [
-  { id: 'ethique', emoji: '🔵', titre: 'Éthique', sousTitre: "Responsabilité, équité, transparence : les choix que l'IA impose à l'enseignant·e", prefix: 'E' },
-  { id: 'juridique', emoji: '🟢', titre: 'Juridique', sousTitre: "RGPD, AI Act, droit d'auteur : les règles qui encadrent déjà vos usages", prefix: 'J' },
-  { id: 'ecologique', emoji: '🟡', titre: 'Écologique', sousTitre: "Ce que l'IA coûte à la planète — et ce que vous pouvez en faire en classe", prefix: 'Eco' },
-  { id: 'esprit_critique', emoji: '🔴', titre: 'Esprit critique', sousTitre: "Hallucinations, biais, idéologies des modèles : savoir douter intelligemment", prefix: 'EC' },
-  { id: 'cybersecurite', emoji: '🟠', titre: 'Cybersécurité', sousTitre: "L'IA change les règles : les anciens repères ne suffisent plus", prefix: 'CS' },
-  { id: 'democratique', emoji: '🟣', titre: 'Démocratique', sousTitre: "Bulles de filtre, deepfakes politiques, manipulation de l'opinion : l'IA et la citoyenneté", prefix: 'D' },
-  { id: 'geopolitique', emoji: '⚫', titre: 'Géopolitique', sousTitre: "Qui développe l'IA que vous utilisez ? À qui donnez-vous du pouvoir et de l'information ?", prefix: 'G' }
-];
+    /* ==========================================================
+       STRUCTURE DU QUESTIONNAIRE
+       ========================================================== */
+    const ENJEUX = [
+      { id: 'ethique', emoji: '🔵', titre: 'Éthique', sousTitre: "Responsabilité, équité, transparence : les choix que l'IA impose à l'enseignant·e", prefix: 'E' },
+      { id: 'juridique', emoji: '🟢', titre: 'Juridique', sousTitre: "RGPD, AI Act, droit d'auteur : les règles qui encadrent déjà vos usages", prefix: 'J' },
+      { id: 'ecologique', emoji: '🟡', titre: 'Écologique', sousTitre: "Ce que l'IA coûte à la planète — et ce que vous pouvez en faire en classe", prefix: 'Eco' },
+      { id: 'esprit_critique', emoji: '🔴', titre: 'Esprit critique', sousTitre: "Hallucinations, biais, idéologies des modèles : savoir douter intelligemment", prefix: 'EC' },
+      { id: 'cybersecurite', emoji: '🟠', titre: 'Cybersécurité', sousTitre: "L'IA change les règles : les anciens repères ne suffisent plus", prefix: 'CS' },
+      { id: 'democratique', emoji: '🟣', titre: 'Démocratique', sousTitre: "Bulles de filtre, deepfakes politiques, manipulation de l'opinion : l'IA et la citoyenneté", prefix: 'D' },
+      { id: 'geopolitique', emoji: '⚫', titre: 'Géopolitique', sousTitre: "Qui développe l'IA que vous utilisez ? À qui donnez-vous du pouvoir et de l'information ?", prefix: 'G' }
+    ];
 
-const NOM_ENJEUX_AFFICHE = {
-  ethique: 'Éthique',
-  juridique: 'Juridique',
-  ecologique: 'Écologique',
-  esprit_critique: 'Esprit critique',
-  cybersecurite: 'Cybersécurité',
-  democratique: 'Démocratique',
-  geopolitique: 'Géopolitique'
-};
+    const NOM_ENJEUX_AFFICHE = {
+      ethique: 'Éthique',
+      juridique: 'Juridique',
+      ecologique: 'Écologique',
+      esprit_critique: 'Esprit critique',
+      cybersecurite: 'Cybersécurité',
+      democratique: 'Démocratique',
+      geopolitique: 'Géopolitique'
+    };
 
-const QUESTIONS = {
-  // ===== MISE EN ROUTE =====
-  M1: { type: 'choix', text: "En ce moment, comment décririez-vous votre rapport à l'IA générative dans votre travail d'enseignant·e ?",
-    options: [
-      "Je l'évite ou je m'y oppose — par choix ou par manque de temps",
-      "Je l'observe de loin — curieux·se mais pas encore utilisateur·rice",
-      "Je l'expérimente — j'utilise quelques outils sans cadre défini",
-      "Je l'intègre — j'ai des pratiques stables et je les questionne"
-    ], score: null },
-  M2: { type: 'choix', text: "Dans votre classe ou votre école, l'IA générative est actuellement un sujet...",
-    options: [
-      "Absent — on n'en parle pas",
-      "Évité — on sait que ça existe mais on préfère ne pas ouvrir la boîte",
-      "Émergent — quelques collègues ou élèves commencent à en parler",
-      "Présent — il y a déjà des usages, des débats, peut-être des tensions"
-    ], score: null },
+    const QUESTIONS = {
+      // ===== MISE EN ROUTE =====
+      M1: {
+        type: 'choix', text: "En ce moment, comment décririez-vous votre rapport à l'IA générative dans votre travail d'enseignant·e ?",
+        options: [
+          "Je l'évite ou je m'y oppose — par choix ou par manque de temps",
+          "Je l'observe de loin — curieux·se mais pas encore utilisateur·rice",
+          "Je l'expérimente — j'utilise quelques outils sans cadre défini",
+          "Je l'intègre — j'ai des pratiques stables et je les questionne"
+        ], score: null
+      },
+      M2: {
+        type: 'choix', text: "Dans votre classe ou votre école, l'IA générative est actuellement un sujet...",
+        options: [
+          "Absent — on n'en parle pas",
+          "Évité — on sait que ça existe mais on préfère ne pas ouvrir la boîte",
+          "Émergent — quelques collègues ou élèves commencent à en parler",
+          "Présent — il y a déjà des usages, des débats, peut-être des tensions"
+        ], score: null
+      },
 
-  // ===== ÉTHIQUE =====
-  E1: { type: 'choix', text: "Un·e collègue utilise une IA pour générer des commentaires de bulletins personnalisés pour ses 120 élèves. Il/elle ne le mentionne pas aux élèves ni aux parents. Votre réaction ?",
-    options: [
-      "C'est pragmatique — personne n'a besoin de savoir comment les outils sont utilisés",
-      "C'est discutable — l'usage est légitime mais la transparence me semblerait préférable",
-      "C'est problématique — la transparence envers les familles est une obligation déontologique",
-      "C'est inacceptable — les données d'élèves ne devraient jamais alimenter une IA grand public"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  E2: { type: 'choix', text: "L'IA peut adapter le contenu pédagogique à chaque élève (rythme, niveau, style d'apprentissage). Cette personnalisation vous inspire surtout...",
-    options: [
-      "De l'enthousiasme — c'est une promesse de différenciation enfin accessible",
-      "De la prudence — elle risque de renforcer les inégalités selon l'accès aux outils",
-      "De la méfiance — je ne sais pas sur quelles données ni selon quels critères elle opère",
-      "Du scepticisme — la relation pédagogique ne se réduit pas à de la personnalisation algorithmique"
-    ], score: { A: 1, B: 3, C: 3, D: 3 } },
-  E3: { type: 'choix', text: "Dans votre pratique, à quelle fréquence déclarez-vous explicitement à vos élèves que vous avez utilisé une IA pour préparer un cours, un exercice ou une évaluation ?",
-    options: [
-      "Jamais — je n'utilise pas l'IA pour préparer mes cours",
-      "Jamais — je l'utilise mais je n'en parle pas",
-      "Parfois — quand ça me semble pertinent d'en faire un sujet de discussion",
-      "Systématiquement — c'est un principe que je me suis fixé"
-    ], score: { A: 1, B: 1, C: 3, D: 4 } },
-  E4: { type: 'choix', text: "Parmi ces enjeux éthiques liés à l'IA en éducation, lequel vous préoccupe le plus ?", help: "(une seule réponse)",
-    options: [
-      "La délégation de décisions pédagogiques à une machine (qui note, qui oriente, qui recommande)",
-      "Les biais discriminants dans les modèles (genre, origine, langue)",
-      "La dépendance des élèves à l'IA au détriment de leurs propres compétences cognitives",
-      "La fracture numérique entre élèves qui ont accès à l'IA et ceux qui n'y ont pas accès"
-    ], score: { A: 2, B: 2, C: 2, D: 2 } },
-  E5: { type: 'likert', text: "Sur une échelle de 1 à 5, dans quelle mesure vous sentez-vous équipé·e pour aborder les enjeux éthiques de l'IA avec vos élèves ?", help: "1 = Pas du tout équipé·e — 5 = Tout à fait équipé·e", labels: ["Pas du tout", "Tout à fait"], maxLikert: 5, normalizeMax: 5 },
-  E6: { type: 'choix', text: "Si une IA utilisée en classe produit un contenu biaisé ou injuste pour un élève, qui est selon vous principalement responsable ?",
-    options: [
-      "L'entreprise qui a développé l'outil",
-      "L'enseignant·e qui a choisi de l'utiliser sans vérification",
-      "L'institution qui a validé son déploiement sans cadre",
-      "La responsabilité est nécessairement partagée — c'est précisément là le problème éthique"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  E7: { type: 'ouverte', text: "« Ce qui me dérange le plus dans l'usage de l'IA avec des élèves, c'est… »", placeholder: "Une ligne, votre première intuition." },
+      // ===== ÉTHIQUE =====
+      E1: {
+        type: 'choix', text: "Un·e collègue utilise une IA pour générer des commentaires de bulletins personnalisés pour ses 120 élèves. Il/elle ne le mentionne pas aux élèves ni aux parents. Votre réaction ?",
+        options: [
+          "C'est pragmatique — personne n'a besoin de savoir comment les outils sont utilisés",
+          "C'est discutable — l'usage est légitime mais la transparence me semblerait préférable",
+          "C'est problématique — la transparence envers les familles est une obligation déontologique",
+          "C'est inacceptable — les données d'élèves ne devraient jamais alimenter une IA grand public"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      E2: {
+        type: 'choix', text: "L'IA peut adapter le contenu pédagogique à chaque élève (rythme, niveau, style d'apprentissage). Cette personnalisation vous inspire surtout...",
+        options: [
+          "De l'enthousiasme — c'est une promesse de différenciation enfin accessible",
+          "De la prudence — elle risque de renforcer les inégalités selon l'accès aux outils",
+          "De la méfiance — je ne sais pas sur quelles données ni selon quels critères elle opère",
+          "Du scepticisme — la relation pédagogique ne se réduit pas à de la personnalisation algorithmique, surtout si l'enseignantt(e) ne maitrise pas les outils"
+        ], score: { A: 1, B: 3, C: 3, D: 3 }
+      },
+      E3: {
+        type: 'choix', text: "Dans votre pratique, à quelle fréquence déclarez-vous explicitement à vos élèves que vous avez utilisé une IA pour préparer un cours, un exercice ou une évaluation ?",
+        options: [
+          "Jamais — je n'utilise pas l'IA pour préparer mes cours",
+          "Jamais — je l'utilise mais je n'en parle pas",
+          "Parfois — quand ça me semble pertinent d'en faire un sujet de discussion",
+          "Systématiquement — c'est un principe que je me suis fixé"
+        ], score: { A: 1, B: 1, C: 3, D: 4 }
+      },
+      E4: {
+        type: 'choix', text: "Parmi ces enjeux éthiques liés à l'IA en éducation, lequel vous préoccupe le plus ?", help: "(une seule réponse)",
+        options: [
+          "La délégation de décisions pédagogiques à une machine (qui note, qui oriente, qui recommande)",
+          "Les biais discriminants dans les modèles (genre, origine, langue)",
+          "La dépendance des élèves à l'IA au détriment de leurs propres compétences cognitives",
+          "La fracture numérique entre élèves qui ont accès à l'IA et ceux qui n'y ont pas accès"
+        ], score: { A: 2, B: 2, C: 2, D: 2 }
+      },
+      E5: { type: 'likert', text: "Sur une échelle de 1 à 5, dans quelle mesure vous sentez-vous équipé·e pour aborder les enjeux éthiques de l'IA avec vos élèves ?", help: "1 = Pas du tout équipé·e — 5 = Tout à fait équipé·e", labels: ["Pas du tout", "Tout à fait"], maxLikert: 5, normalizeMax: 5 },
+      E6: {
+        type: 'choix', text: "Si une IA utilisée en classe produit un contenu biaisé ou injuste pour un élève, qui est selon vous principalement responsable ?",
+        options: [
+          "L'entreprise qui a développé l'outil",
+          "L'enseignant·e qui a choisi de l'utiliser sans vérification",
+          "L'institution qui a validé son déploiement sans cadre",
+          "La responsabilité est nécessairement partagée — c'est précisément là le problème éthique"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      E7: { type: 'ouverte', text: "« Ce qui me dérange le plus dans l'usage de l'IA avec des élèves, c'est… »", placeholder: "Une ligne, votre première intuition." },
 
-  // ===== JURIDIQUE =====
-  J1: { type: 'choix', text: "Quand vous utilisez un outil d'IA grand public (ChatGPT, Gemini, Copilot…) dans votre pratique professionnelle, mettez-vous des données sur vos élèves dans vos prompts ?",
-    options: [
-      "Oui, régulièrement — c'est utile pour contextualiser les demandes",
-      "Oui, parfois — sans y avoir vraiment réfléchi",
-      "Rarement — j'essaie d'éviter mais sans règle précise",
-      "Jamais — je sais que c'est problématique du point de vue du RGPD"
-    ], score: { A: 1, B: 1, C: 3, D: 4 } },
-  J2: { type: 'choix', text: "L'AI Act européen est entré en application en 2025. Il classe les systèmes d'IA selon leur niveau de risque. Êtes-vous en mesure de situer un outil que vous utilisez dans cette classification ?",
-    options: [
-      "Non — c'est la première fois que j'entends parler de l'AI Act",
-      "J'en connais l'existence mais pas le contenu",
-      "Je connais les grandes lignes mais pas assez pour appliquer la classification",
-      "Oui — je peux évaluer le niveau de risque d'un outil selon ce cadre"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  J3: { type: 'choix', text: "Un·e élève remet un devoir manifestement rédigé par une IA, sans le signaler. Dans votre établissement, existe-t-il un cadre clair pour traiter cette situation ?",
-    options: [
-      "Oui, et je le connais bien",
-      "Il existe quelque chose, mais c'est flou ou peu appliqué",
-      "Non, chaque enseignant·e gère à sa façon",
-      "Je ne sais pas"
-    ], score: { A: 4, B: 2, C: 2, D: 1 } },
-  J4: { type: 'choix', text: "Vous utilisez une image générée par IA pour illustrer un support de cours que vous distribuez à vos élèves. Du point de vue du droit d'auteur, cette pratique vous semble :",
-    options: [
-      "Tout à fait légale — une image IA n'est pas protégée",
-      "Probablement légale, mais je ne suis pas certain·e",
-      "Floue juridiquement — la question n'est pas encore tranchée en Belgique",
-      "Potentiellement problématique — les modèles se sont entraînés sur des œuvres protégées"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  J5: { type: 'likert', text: "Sur une échelle de 1 à 5, dans quelle mesure vous sentez-vous informé·e du cadre juridique applicable à l'usage de l'IA dans votre classe ?", help: "1 = Pas du tout informé·e — 5 = Très informé·e", labels: ["Pas du tout", "Très"], maxLikert: 5, normalizeMax: 5 },
-  J6: { type: 'choix', text: "Un élève mineur vous demande s'il peut ouvrir un compte sur ChatGPT pour ses devoirs. Vous lui répondez :",
-    options: [
-      "Oui, sans restriction — je ne vois pas de problème",
-      "Je lui conseille de le faire avec un parent",
-      "Non — ces plateformes ont des restrictions d'âge (13 ou 16 ans selon les cas)",
-      "Je ne sais pas — je n'ai jamais vérifié les conditions d'utilisation"
-    ], score: { A: 1, B: 2, C: 3, D: 1 } },
-  J7: { type: 'ouverte', text: "« Ce que j'aimerais mieux comprendre sur le cadre légal de l'IA en classe, c'est… »", placeholder: "Une ligne." },
+      // ===== JURIDIQUE =====
+      J1: {
+        type: 'choix', text: "Quand vous utilisez un outil d'IA grand public (ChatGPT, Gemini, Copilot…) dans votre pratique professionnelle, mettez-vous des données (noms, cotes, réponses,...) sur vos élèves dans vos prompts ?",
+        options: [
+          "Oui, régulièrement — c'est utile pour contextualiser les demandes",
+          "Oui, parfois — sans y avoir vraiment réfléchi",
+          "Rarement — j'essaie d'éviter mais sans règle précise",
+          "Jamais — je sais que c'est problématique du point de vue du RGPD"
+        ], score: { A: 1, B: 1, C: 3, D: 4 }
+      },
+      J2: {
+        type: 'choix', text: "L'AI Act européen est entré en application en 2025. Il classe les systèmes d'IA selon leur niveau de risque. Êtes-vous en mesure de situer un outil que vous utilisez dans cette classification ?",
+        options: [
+          "Non — c'est la première fois que j'entends parler de l'AI Act",
+          "J'en connais l'existence mais pas le contenu",
+          "Je connais les grandes lignes mais pas assez pour appliquer la classification",
+          "Oui — je peux évaluer le niveau de risque d'un outil selon ce cadre"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      J3: {
+        type: 'choix', text: "Un·e élève remet un devoir manifestement rédigé par une IA, sans le signaler. Dans votre établissement, existe-t-il un cadre clair pour traiter cette situation ?",
+        options: [
+          "Oui, et je le connais bien",
+          "Il existe quelque chose, mais c'est flou ou peu appliqué",
+          "Non, chaque enseignant·e gère à sa façon",
+          "Je ne sais pas"
+        ], score: { A: 4, B: 2, C: 2, D: 1 }
+      },
+      J4: {
+        type: 'choix', text: "Vous utilisez une image générée par IA pour illustrer un support de cours que vous distribuez à vos élèves. Du point de vue du droit d'auteur, cette pratique vous semble :",
+        options: [
+          "Tout à fait légale — une image IA n'est pas protégée",
+          "Probablement légale, mais je ne suis pas certain·e",
+          "Floue juridiquement — la question n'est pas encore tranchée en Belgique",
+          "Potentiellement problématique — les modèles se sont entraînés sur des œuvres protégées"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      J5: { type: 'likert', text: "Sur une échelle de 1 à 5, dans quelle mesure vous sentez-vous informé·e du cadre juridique applicable à l'usage de l'IA dans votre classe ?", help: "1 = Pas du tout informé·e — 5 = Très informé·e", labels: ["Pas du tout", "Très"], maxLikert: 5, normalizeMax: 5 },
+      J6: {
+        type: 'choix', text: "Un élève mineur vous demande s'il peut ouvrir un compte sur ChatGPT pour ses devoirs. Vous lui répondez :",
+        options: [
+          "Oui, sans restriction — je ne vois pas de problème",
+          "Je lui conseille de le faire avec un parent",
+          "Non — ces plateformes ont des restrictions d'âge (13 ou 16 ans selon les cas)",
+          "Je ne sais pas — je n'ai jamais vérifié les conditions d'utilisation"
+        ], score: { A: 1, B: 2, C: 3, D: 1 }
+      },
+      J7: { type: 'ouverte', text: "« Ce que j'aimerais mieux comprendre sur le cadre légal de l'IA en classe, c'est… »", placeholder: "Une ligne." },
 
-  // ===== ÉCOLOGIQUE =====
-  Eco1: { type: 'choix', text: "Saviez-vous qu'une requête adressée à un grand modèle de langage consomme environ 10 fois plus d'énergie qu'une recherche Google ?",
-    options: [
-      "Non, je l'ignorais complètement",
-      "J'en avais une vague idée",
-      "Oui, je le savais",
-      "Oui, et j'en tiens compte dans mes usages"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  Eco2: { type: 'choix', text: "L'impact environnemental de l'IA (énergie, eau, minerais rares) est un argument que vous mobiliseriez en classe pour...",
-    options: [
-      "Déconseiller l'IA à vos élèves",
-      "Nuancer l'enthousiasme autour de l'IA",
-      "Encourager un usage sobre et conscient",
-      "Je ne l'utiliserais pas — ce n'est pas mon rôle ou ma discipline"
-    ], score: { A: 1, B: 3, C: 4, D: 2 } },
-  Eco3: { type: 'likert', text: "Sur une échelle de 1 à 5, dans quelle mesure votre usage des outils numériques (dont l'IA) est-il guidé par des considérations environnementales ?", help: "1 = Pas du tout — 5 = Systématiquement", labels: ["Pas du tout", "Systématiquement"], maxLikert: 5, normalizeMax: 5 },
-  Eco4: { type: 'choix', text: "Avez-vous entendu parler de plateformes permettant de comparer l'empreinte carbone de différents modèles d'IA (comme Compar:IA) ?",
-    options: [
-      "Non, je ne connaissais pas",
-      "Oui, j'en ai entendu parler",
-      "Oui, je l'ai déjà utilisé",
-      "Oui, et j'envisage ou j'ai déjà utilisé ce type d'outil en classe"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  Eco5: { type: 'choix', text: "Choisir un modèle d'IA frugal plutôt qu'un modèle énergivore pour une tâche donnée vous semble être...",
-    options: [
-      "Un détail marginal — les gains sont négligeables à mon échelle",
-      "Un geste intéressant mais difficile à mettre en œuvre faute d'information",
-      "Un réflexe à développer, comme trier ses déchets",
-      "Un critère de choix que j'intègre ou veux intégrer dans mes usages"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  Eco6: { type: 'choix', text: "Avez-vous déjà abordé l'impact environnemental du numérique avec vos élèves ?",
-    options: [
-      "Jamais",
-      "Une ou deux fois, informellement",
-      "Oui, dans le cadre d'un cours ou d'un projet",
-      "Régulièrement — c'est un fil rouge dans mon enseignement"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  Eco7: { type: 'ouverte', text: "« Quand je pense à l'empreinte environnementale de l'IA, ce qui me vient en premier c'est… »", placeholder: "Une ligne." },
+      // ===== ÉCOLOGIQUE =====
+      Eco1: {
+        type: 'choix', text: "Saviez-vous qu'une requête adressée à un grand modèle de langage consomme environ 10 fois plus d'énergie qu'une recherche Google ?",
+        options: [
+          "Non, je l'ignorais complètement",
+          "J'en avais une vague idée",
+          "Oui, je le savais",
+          "Oui, et j'en tiens compte dans mes usages"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      Eco2: {
+        type: 'choix', text: "L'impact environnemental de l'IA (énergie, eau, minerais rares) est un argument que vous mobiliseriez en classe pour...",
+        options: [
+          "Déconseiller l'IA à vos élèves",
+          "Nuancer l'enthousiasme autour de l'IA",
+          "Encourager un usage sobre et conscient",
+          "Je ne l'utiliserais pas — ce n'est pas mon rôle ou ma discipline"
+        ], score: { A: 1, B: 3, C: 4, D: 2 }
+      },
+      Eco3: { type: 'likert', text: "Sur une échelle de 1 à 5, dans quelle mesure votre usage des outils numériques (dont l'IA) est-il guidé par des considérations environnementales ?", help: "1 = Pas du tout — 5 = Systématiquement", labels: ["Pas du tout", "Systématiquement"], maxLikert: 5, normalizeMax: 5 },
+      Eco4: {
+        type: 'choix', text: "Avez-vous entendu parler de plateformes permettant de comparer l'empreinte carbone de différents modèles d'IA (comme Compar:IA) ?",
+        options: [
+          "Non, je ne connaissais pas",
+          "Oui, j'en ai entendu parler",
+          "Oui, je l'ai déjà utilisé",
+          "Oui, et j'envisage ou j'ai déjà utilisé ce type d'outil en classe"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      Eco5: {
+        type: 'choix', text: "Choisir un modèle d'IA frugal plutôt qu'un modèle énergivore pour une tâche donnée vous semble être...",
+        options: [
+          "Un détail marginal — les gains sont négligeables à mon échelle",
+          "Un geste intéressant mais difficile à mettre en œuvre faute d'information",
+          "Un réflexe à développer, comme trier ses déchets",
+          "Un critère de choix que j'intègre ou veux intégrer dans mes usages"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      Eco6: {
+        type: 'choix', text: "Avez-vous déjà abordé l'impact environnemental du numérique avec vos élèves ?",
+        options: [
+          "Jamais",
+          "Une ou deux fois, informellement",
+          "Oui, dans le cadre d'un cours ou d'un projet",
+          "Régulièrement — c'est un fil rouge dans mon enseignement"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      Eco7: { type: 'ouverte', text: "« Quand je pense à l'empreinte environnementale de l'IA, ce qui me vient en premier c'est… »", placeholder: "Une ligne." },
 
-  // ===== ESPRIT CRITIQUE =====
-  EC1: { type: 'choix', text: "Une IA vous produit un texte fluide, bien structuré, avec des références précises. Votre réflexe est de...",
-    options: [
-      "L'utiliser tel quel — la qualité formelle est un indicateur suffisant",
-      "Le relire attentivement mais sans vérification systématique des sources",
-      "Vérifier les affirmations clés avant tout usage",
-      "Le traiter comme un brouillon à reconstruire — je ne fais confiance à aucune source IA"
-    ], score: { A: 1, B: 2, C: 4, D: 3 } },
-  EC2: { type: 'choix', text: "Les IA « hallucinent » : elles produisent parfois des informations fausses avec assurance. À quelle fréquence avez-vous personnellement détecté ce phénomène ?",
-    options: [
-      "Jamais — je ne l'ai pas encore rencontré",
-      "Une ou deux fois",
-      "Plusieurs fois — c'est un phénomène que je connais bien",
-      "Souvent — je l'intègre systématiquement dans mon évaluation des sorties IA"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  EC3: { type: 'choix', text: "La même question posée à deux IA différentes peut produire des réponses révélant des nuances idéologiques distinctes (culturelles, politiques, linguistiques). Êtes-vous conscient·e de ce phénomène ?",
-    options: [
-      "Non — je pensais que les IA répondaient de façon neutre et factuelle",
-      "J'en avais l'intuition mais sans exemple concret",
-      "Oui — j'ai déjà observé des différences entre modèles",
-      "Oui, et j'en tiens compte dans le choix des outils que j'utilise ou recommande"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  EC4: { type: 'likert', text: "Sur une échelle de 1 à 5, dans quelle mesure vous sentez-vous capable d'enseigner à vos élèves à évaluer de manière critique les productions d'une IA ?", help: "1 = Pas du tout capable — 5 = Tout à fait capable", labels: ["Pas du tout", "Tout à fait"], maxLikert: 5, normalizeMax: 5 },
-  EC5: { type: 'choix', text: "Un·e élève vous montre un devoir impeccable produit avec l'aide d'une IA. Vous :",
-    options: [
-      "L'acceptez — maîtriser les outils est aussi une compétence à valoriser",
-      "Lui posez des questions orales pour vérifier la compréhension réelle",
-      "Refusez et demandez une version sans IA",
-      "En faites un levier pour discuter de ce que signifie « comprendre » à l'ère de l'IA"
-    ], score: { A: 2, B: 3, C: 2, D: 4 } },
-  EC6: { type: 'choix', text: "Avez-vous des pratiques pédagogiques spécifiques pour entraîner vos élèves à identifier un contenu généré par une IA ?",
-    options: [
-      "Non — pas encore",
-      "J'y réfléchis mais sans démarche stabilisée",
-      "Oui — quelques pratiques intuitives",
-      "Oui — une démarche explicite, outillée, que je peux décrire"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  EC7: { type: 'ouverte', text: "« Quand une IA produit un résultat qui me semble juste, la question que j'oublie le plus souvent de me poser est… »", placeholder: "Une ligne." },
+      // ===== ESPRIT CRITIQUE =====
+      EC1: {
+        type: 'choix', text: "Une IA vous produit un texte fluide, bien structuré, avec des références précises. Votre réflexe est de...",
+        options: [
+          "L'utiliser tel quel — la qualité formelle est un indicateur suffisant",
+          "Le relire attentivement mais sans vérification systématique des sources",
+          "Vérifier les affirmations clés avant tout usage",
+          "Le traiter comme un brouillon à reconstruire — je ne fais confiance à aucune source IA"
+        ], score: { A: 1, B: 2, C: 4, D: 3 }
+      },
+      EC2: {
+        type: 'choix', text: "Les IA « hallucinent » : elles produisent parfois des informations fausses avec assurance. À quelle fréquence avez-vous personnellement détecté ce phénomène ?",
+        options: [
+          "Jamais — je ne l'ai pas encore rencontré",
+          "Une ou deux fois",
+          "Plusieurs fois — c'est un phénomène que je connais bien",
+          "Souvent — je l'intègre systématiquement dans mon évaluation des sorties IA"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      EC3: {
+        type: 'choix', text: "La même question posée à deux IA différentes peut produire des réponses révélant des nuances idéologiques distinctes (culturelles, politiques, linguistiques). Êtes-vous conscient·e de ce phénomène ?",
+        options: [
+          "Non — je pensais que les IA répondaient de façon neutre et factuelle",
+          "J'en avais l'intuition mais sans exemple concret",
+          "Oui — j'ai déjà observé des différences entre modèles",
+          "Oui, et j'en tiens compte dans le choix des outils que j'utilise ou recommande"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      EC4: { type: 'likert', text: "Sur une échelle de 1 à 5, dans quelle mesure vous sentez-vous capable d'enseigner à vos élèves à évaluer de manière critique les productions d'une IA ?", help: "1 = Pas du tout capable — 5 = Tout à fait capable", labels: ["Pas du tout", "Tout à fait"], maxLikert: 5, normalizeMax: 5 },
+      EC5: {
+        type: 'choix', text: "Un·e élève vous montre un devoir impeccable produit avec l'aide d'une IA. Vous :",
+        options: [
+          "L'acceptez — maîtriser les outils est aussi une compétence à valoriser",
+          "Lui posez des questions orales pour vérifier la compréhension réelle",
+          "Refusez et demandez une version sans IA",
+          "En faites un levier pour discuter de ce que signifie « comprendre » à l'ère de l'IA"
+        ], score: { A: 2, B: 3, C: 2, D: 4 }
+      },
+      EC6: {
+        type: 'choix', text: "Avez-vous des pratiques pédagogiques spécifiques pour entraîner vos élèves à identifier un contenu généré par une IA ?",
+        options: [
+          "Non — pas encore",
+          "J'y réfléchis mais sans démarche stabilisée",
+          "Oui — quelques pratiques intuitives",
+          "Oui — une démarche explicite, outillée, que je peux décrire"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      EC7: { type: 'ouverte', text: "« Quand une IA produit un résultat qui me semble juste, la question que j'oublie le plus souvent de me poser est… »", placeholder: "Une ligne." },
 
-  // ===== CYBERSÉCURITÉ =====
-  CS1: { type: 'choix', text: "Parmi les menaces suivantes amplifiées par l'IA, laquelle vous semble la plus sous-estimée dans le milieu scolaire ?",
-    options: [
-      "Le phishing hyper-personnalisé (emails qui imitent parfaitement un collègue ou une direction)",
-      "Le clonage vocal (un appel semblant venir d'un parent ou d'un directeur)",
-      "Les deepfakes impliquant des élèves ou des enseignant·es",
-      "L'exploitation automatisée de vulnérabilités dans les ENT et plateformes scolaires"
-    ], score: { A: 2, B: 2, C: 2, D: 2 } },
-  CS2: { type: 'choix', text: "Lorsque vous utilisez un outil d'IA professionnellement, vérifiez-vous quelles données sont collectées et comment elles sont utilisées ?",
-    options: [
-      "Jamais",
-      "Rarement — seulement si quelque chose m'alerte",
-      "Parfois — pour les outils que j'utilise régulièrement",
-      "Systématiquement — avant tout nouvel usage"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  CS3: { type: 'likert', text: "Sur une échelle de 1 à 5, dans quelle mesure avez-vous abordé les risques de cybersécurité liés à l'IA avec vos élèves ?", help: "1 = Jamais — 5 = Intégré à mes cours", labels: ["Jamais", "Intégré"], maxLikert: 5, normalizeMax: 5 },
-  CS4: { type: 'choix', text: "Vous recevez un email de votre direction vous demandant de transmettre d'urgence les listes de classe avec coordonnées. L'email est parfait, sans faute, avec la signature habituelle. Votre réaction ?",
-    options: [
-      "Je transmets — le message est crédible et urgent",
-      "Je transmets mais j'ai un léger doute que je mets de côté",
-      "Je vérifie par un autre canal (appel téléphonique, contact direct) avant d'agir",
-      "Je suis formé·e à ce type d'attaque — je sais exactement quoi chercher et quoi faire"
-    ], score: { A: 1, B: 2, C: 4, D: 4 } },
-  CS5: { type: 'choix', text: "Êtes-vous en mesure d'expliquer à vos élèves comment se protéger d'une attaque par clonage vocal ou deepfake ?",
-    options: [
-      "Non — je ne me sens pas compétent·e sur ce sujet",
-      "Partiellement — quelques conseils généraux",
-      "Oui — j'ai les connaissances pour l'aborder en classe",
-      "Oui — et j'ai déjà travaillé ce type de scénario avec des élèves"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  CS6: { type: 'choix', text: "Saviez-vous que les garde-fous intégrés aux IA (les filtres qui leur interdisent de produire certains contenus) peuvent être contournés par des techniques accessibles, comme le prompt injection ou le jailbreak ?",
-    options: [
-      "Non — je pensais que ces systèmes étaient fiables",
-      "J'en avais entendu parler sans bien comprendre comment",
-      "Oui — je connais le principe",
-      "Oui — et j'en mesure les implications pour les outils que j'utilise avec mes élèves"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  CS7: { type: 'ouverte', text: "« En matière de cybersécurité à l'ère de l'IA, ce que j'aimerais mieux maîtriser pour le transmettre à mes élèves, c'est… »", placeholder: "Une ligne." },
+      // ===== CYBERSÉCURITÉ =====
+      CS1: {
+        type: 'choix', text: "Parmi les menaces suivantes amplifiées par l'IA, laquelle vous semble la plus sous-estimée dans le milieu scolaire ?",
+        options: [
+          "Le phishing hyper-personnalisé (emails qui imitent parfaitement un collègue ou une direction)",
+          "Le clonage vocal (un appel semblant venir d'un parent ou d'un directeur)",
+          "Les deepfakes impliquant des élèves ou des enseignant·es",
+          "L'exploitation automatisée de vulnérabilités dans les ENT et plateformes scolaires"
+        ], score: { A: 2, B: 2, C: 2, D: 2 }
+      },
+      CS2: {
+        type: 'choix', text: "Lorsque vous utilisez un outil d'IA professionnellement, vérifiez-vous quelles données sont collectées et comment elles sont utilisées ?",
+        options: [
+          "Jamais",
+          "Rarement — seulement si quelque chose m'alerte",
+          "Parfois — pour les outils que j'utilise régulièrement",
+          "Systématiquement — avant tout nouvel usage"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      CS3: { type: 'likert', text: "Sur une échelle de 1 à 5, dans quelle mesure avez-vous abordé les risques de cybersécurité liés à l'IA avec vos élèves ?", help: "1 = Jamais — 5 = Intégré à mes cours", labels: ["Jamais", "Intégré"], maxLikert: 5, normalizeMax: 5 },
+      CS4: {
+        type: 'choix', text: "Vous recevez un email de votre direction vous demandant de transmettre d'urgence les listes de classe avec coordonnées. L'email est parfait, sans faute, avec la signature habituelle. Votre réaction ?",
+        options: [
+          "Je transmets — le message est crédible et urgent",
+          "Je transmets mais j'ai un léger doute que je mets de côté",
+          "Je vérifie par un autre canal (appel téléphonique, contact direct) avant d'agir",
+          "Je suis formé·e à ce type d'attaque — je sais exactement quoi chercher et quoi faire"
+        ], score: { A: 1, B: 2, C: 4, D: 4 }
+      },
+      CS5: {
+        type: 'choix', text: "Êtes-vous en mesure d'expliquer à vos élèves comment se protéger d'une attaque par clonage vocal ou deepfake ?",
+        options: [
+          "Non — je ne me sens pas compétent·e sur ce sujet",
+          "Partiellement — quelques conseils généraux",
+          "Oui — j'ai les connaissances pour l'aborder en classe",
+          "Oui — et j'ai déjà travaillé ce type de scénario avec des élèves"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      CS6: {
+        type: 'choix', text: "Saviez-vous que les garde-fous intégrés aux IA (les filtres qui leur interdisent de produire certains contenus) peuvent être contournés par des techniques accessibles, comme le prompt injection ou le jailbreak ?",
+        options: [
+          "Non — je pensais que ces systèmes étaient fiables",
+          "J'en avais entendu parler sans bien comprendre comment",
+          "Oui — je connais le principe",
+          "Oui — et j'en mesure les implications pour les outils que j'utilise avec mes élèves"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      CS7: { type: 'ouverte', text: "« En matière de cybersécurité à l'ère de l'IA, ce que j'aimerais mieux maîtriser pour le transmettre à mes élèves, c'est… »", placeholder: "Une ligne." },
 
-  // ===== DÉMOCRATIQUE =====
-  D1: { type: 'choix', text: "Le concept de « dividende du menteur » désigne le fait que la prolifération de contenus faux rend aussi plus facile de nier des contenus vrais. Connaissiez-vous ce concept ?",
-    options: [
-      "Non — c'est nouveau pour moi",
-      "J'en avais l'intuition sans connaître le terme",
-      "Oui — je le connais",
-      "Oui — et je l'utilise ou j'envisage de l'utiliser avec mes élèves"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  D2: { type: 'likert', text: "Sur une échelle de 1 à 5, quel est votre niveau d'inquiétude face à la capacité de l'IA à produire à grande échelle des contenus de désinformation ciblés (deepfakes électoraux, fausses déclarations, campagnes automatisées) ?", help: "1 = Pas inquiet·e — 5 = Très inquiet·e", labels: ["Pas inquiet·e", "Très inquiet·e"], maxLikert: 5, normalizeMax: 5 },
-  D3: { type: 'choix', text: "Avez-vous observé des effets de bulle informationnelle (exposition répétée aux mêmes points de vue, imperméabilité aux arguments contraires) chez vos élèves ?",
-    options: [
-      "Non — pas de manière évidente",
-      "Peut-être — mais difficile à attribuer aux algorithmes spécifiquement",
-      "Oui — c'est observable et récurrent",
-      "Oui — et j'ai développé des pratiques pour travailler ce phénomène en classe"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  D4: { type: 'choix', text: "Préparez-vous vos élèves à identifier et analyser des contenus générés par l'IA à des fins de manipulation démocratique ?",
-    options: [
-      "Non — ce n'est pas encore entré dans mes cours",
-      "Rarement — à l'occasion d'actualités marquantes",
-      "Parfois — dans des séquences sur les médias ou la citoyenneté",
-      "Régulièrement — c'est un axe structurant de mon enseignement"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  D5: { type: 'choix', text: "La concentration du développement de l'IA dans quelques grandes entreprises privées (principalement américaines) vous préoccupe-t-elle sur le plan démocratique ?",
-    options: [
-      "Non — la concurrence du marché est suffisante comme régulateur",
-      "Un peu — mais pas différemment d'autres industries",
-      "Oui — un contrôle public ou des IA souveraines européennes seraient nécessaires",
-      "Oui, fortement — c'est une question de puissance culturelle et d'indépendance"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  D6: { type: 'choix', text: "Pensez-vous que l'école a un rôle spécifique et urgent dans la formation des élèves à une citoyenneté lucide face à l'IA ?",
-    options: [
-      "Non — ce rôle appartient aux familles et à la société civile",
-      "Partiellement — l'école peut contribuer mais ce n'est pas sa mission principale",
-      "Oui — c'est une mission civique fondamentale",
-      "Oui, et c'est urgent — l'école est en retard sur ce sujet"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  D7: { type: 'ouverte', text: "« Ce que je voudrais que mes élèves soient capables de faire face à un contenu potentiellement généré par une IA dans un contexte politique ou médiatique, c'est… »", placeholder: "Une ligne." },
+      // ===== DÉMOCRATIQUE =====
+      D1: {
+        type: 'choix', text: "Le concept de « dividende du menteur » désigne le fait que la prolifération de contenus faux rend aussi plus facile de nier des contenus vrais. Connaissiez-vous ce concept ?",
+        options: [
+          "Non — c'est nouveau pour moi",
+          "J'en avais l'intuition sans connaître le terme",
+          "Oui — je le connais",
+          "Oui — et je l'utilise ou j'envisage de l'utiliser avec mes élèves"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      D2: { type: 'likert', text: "Sur une échelle de 1 à 5, quel est votre niveau d'inquiétude face à la capacité de l'IA à produire à grande échelle des contenus de désinformation ciblés (deepfakes électoraux, fausses déclarations, campagnes automatisées) ?", help: "1 = Pas inquiet·e — 5 = Très inquiet·e", labels: ["Pas inquiet·e", "Très inquiet·e"], maxLikert: 5, normalizeMax: 5 },
+      D3: {
+        type: 'choix', text: "Avez-vous observé des effets de bulle informationnelle (exposition répétée aux mêmes points de vue, imperméabilité aux arguments contraires) chez vos élèves ?",
+        options: [
+          "Non — pas de manière évidente",
+          "Peut-être — mais difficile à attribuer aux algorithmes spécifiquement",
+          "Oui — c'est observable et récurrent",
+          "Oui — et j'ai développé des pratiques pour travailler ce phénomène en classe"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      D4: {
+        type: 'choix', text: "Préparez-vous vos élèves à identifier et analyser des contenus générés par l'IA à des fins de manipulation démocratique ?",
+        options: [
+          "Non — ce n'est pas encore entré dans mes cours",
+          "Rarement — à l'occasion d'actualités marquantes",
+          "Parfois — dans des séquences sur les médias ou la citoyenneté",
+          "Régulièrement — c'est un axe structurant de mon enseignement"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      D5: {
+        type: 'choix', text: "La concentration du développement de l'IA dans quelques grandes entreprises privées (principalement américaines) vous préoccupe-t-elle sur le plan démocratique ?",
+        options: [
+          "Non — la concurrence du marché est suffisante comme régulateur",
+          "Un peu — mais pas différemment d'autres industries",
+          "Oui — un contrôle public ou des IA souveraines européennes seraient nécessaires",
+          "Oui, fortement — c'est une question de puissance culturelle et d'indépendance de nos sociétés démocratiques"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      D6: {
+        type: 'choix', text: "Pensez-vous que l'école a un rôle spécifique et urgent dans la formation des élèves à une citoyenneté lucide face à l'IA ?",
+        options: [
+          "Non — ce rôle appartient aux familles et à la société civile",
+          "Partiellement — l'école peut contribuer mais ce n'est pas sa mission principale",
+          "Oui — c'est une mission civique fondamentale",
+          "Oui, et c'est urgent — l'école est en retard sur ce sujet"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      D7: { type: 'ouverte', text: "« Ce que je voudrais que mes élèves soient capables de faire face à un contenu potentiellement généré par une IA dans un contexte politique ou médiatique, c'est… »", placeholder: "Une ligne." },
 
-  // ===== GÉOPOLITIQUE =====
-  G1: { type: 'choix', text: "Saviez-vous que les grands modèles d'IA utilisés en Belgique francophone sont majoritairement développés par des entreprises américaines, hébergés sur des serveurs hors UE, et entraînés sur des données dont vous ne contrôlez pas l'origine culturelle et linguistique ?",
-    options: [
-      "Non — je ne l'avais pas réalisé dans ces termes",
-      "J'en avais une idée vague",
-      "Oui — je le savais",
-      "Oui — et j'en mesure les conséquences pour mes usages professionnels"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  G2: { type: 'choix', text: "Le choix des outils d'IA utilisés à l'école vous semble être une décision...",
-    options: [
-      "Purement pédagogique — ce qui compte c'est l'efficacité en classe",
-      "Surtout pratique — facilité d'accès, gratuité, ergonomie",
-      "Partiellement politique — mais ce n'est pas à l'enseignant·e de trancher",
-      "Pleinement politique — choisir un outil, c'est choisir à qui on donne du pouvoir et de l'information"
-    ], score: { A: 1, B: 1, C: 2, D: 4 } },
-  G3: { type: 'likert', text: "Sur une échelle de 1 à 5, dans quelle mesure pensez-vous que les valeurs culturelles, politiques et économiques des développeurs d'une IA influencent les réponses qu'elle produit ?", help: "1 = Pas du tout — 5 = Massivement", labels: ["Pas du tout", "Massivement"], maxLikert: 5, normalizeMax: 5 },
-  G4: { type: 'choix', text: "Les données produites par les utilisateurs d'outils d'IA (dont potentiellement vos élèves) alimentent l'entraînement de modèles détenus par des entreprises étrangères. Cette réalité vous inspire...",
-    options: [
-      "De l'indifférence — c'est le prix à payer pour des services accessibles",
-      "Une inquiétude modérée — sans savoir comment agir autrement",
-      "Une vigilance — je choisis autant que possible des alternatives respectueuses des données",
-      "Une préoccupation forte — cela devrait être un critère de choix institutionnel en FWB"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  G5: { type: 'choix', text: "L'Union européenne développe une approche réglementaire de l'IA distincte des États-Unis et de la Chine. Cette différence vous semble...",
-    options: [
-      "Peu importante — l'IA est une technologie mondiale et neutre",
-      "Intéressante mais trop contraignante pour l'innovation",
-      "Nécessaire pour protéger les droits des citoyens européens",
-      "Insuffisante — l'Europe risque de perdre sa souveraineté numérique"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  G6: { type: 'choix', text: "Avez-vous connaissance d'initiatives belges ou européennes visant à développer des outils d'IA publics ou souverains pour l'éducation ?",
-    options: [
-      "Non — aucune",
-      "J'en ai entendu parler sans connaître de projet concret",
-      "Oui — je connais quelques initiatives (FWB, Horizon Europe, etc.)",
-      "Oui — je suis ou participe à de telles initiatives"
-    ], score: { A: 1, B: 2, C: 3, D: 4 } },
-  G7: { type: 'ouverte', text: "« La question que je ne m'étais jamais posée sur l'IA que j'utilise en classe, et que ce questionnaire vient de faire surgir, c'est… »", placeholder: "Une ligne." }
-};
+      // ===== GÉOPOLITIQUE =====
+      G1: {
+        type: 'choix', text: "Saviez-vous que les grands modèles d'IA utilisés en Belgique francophone sont majoritairement développés par des entreprises américaines, hébergés sur des serveurs hors UE, et entraînés sur des données dont vous ne contrôlez pas l'origine culturelle et linguistique ?",
+        options: [
+          "Non — je ne l'avais pas réalisé dans ces termes",
+          "J'en avais une idée vague",
+          "Oui — je le savais",
+          "Oui — et j'en mesure les conséquences pour mes usages professionnels"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      G2: {
+        type: 'choix', text: "Le choix des outils d'IA utilisés à l'école vous semble être une décision...",
+        options: [
+          "Purement pédagogique — ce qui compte c'est l'efficacité en classe",
+          "Surtout pratique — facilité d'accès, gratuité, ergonomie",
+          "Partiellement politique — c'est une décision d'établissement mais ce n'est pas à l'enseignant·e de trancher",
+          "Pleinement politique — choisir un outil, c'est choisir à qui on donne du pouvoir et de l'information"
+        ], score: { A: 1, B: 1, C: 2, D: 4 }
+      },
+      G3: { type: 'likert', text: "Sur une échelle de 1 à 5, dans quelle mesure pensez-vous que les valeurs culturelles, politiques et économiques des développeurs d'une IA influencent les réponses qu'elle produit ?", help: "1 = Pas du tout — 5 = Massivement", labels: ["Pas du tout", "Massivement"], maxLikert: 5, normalizeMax: 5 },
+      G4: {
+        type: 'choix', text: "Les données produites par les utilisateurs d'outils d'IA (dont potentiellement vos élèves) alimentent l'entraînement de modèles détenus par des entreprises étrangères. Cette réalité vous inspire...",
+        options: [
+          "De l'indifférence — c'est le prix à payer pour des services accessibles",
+          "Une inquiétude modérée — sans savoir comment agir autrement",
+          "Une vigilance — je choisis autant que possible des alternatives respectueuses des données",
+          "Une préoccupation forte — cela devrait être un critère de choix institutionnel en FWB"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      G5: {
+        type: 'choix', text: "L'Union européenne développe une approche réglementaire de l'IA distincte des États-Unis et de la Chine. Cette différence vous semble...",
+        options: [
+          "Peu importante — l'IA est une technologie mondiale et neutre",
+          "Intéressante mais trop contraignante pour l'innovation",
+          "Nécessaire pour protéger les droits des citoyens européens",
+          "Insuffisante — l'Europe risque de perdre sa souveraineté numérique si elle ne développe pas aussi ses propres outils d'IA"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      G6: {
+        type: 'choix', text: "Avez-vous connaissance d'initiatives belges ou européennes visant à développer des outils d'IA publics ou souverains pour l'éducation ?",
+        options: [
+          "Non — aucune",
+          "J'en ai entendu parler sans connaître de projet concret",
+          "Oui — je connais quelques initiatives (Albert en france, Mistral, etc.)",
+          "Oui — je soutiens ou participe à de telles initiatives"
+        ], score: { A: 1, B: 2, C: 3, D: 4 }
+      },
+      G7: { type: 'ouverte', text: "« La question que je ne m'étais jamais posée sur l'IA que j'utilise en classe, et que ce questionnaire vient de faire surgir, c'est… »", placeholder: "Une ligne." }
+    };
 
-// Likert E5 special mapping (5 → 4)
-const LIKERT_E5_MAPPING = { 1: 1, 2: 2, 3: 3, 4: 4, 5: 4 };
+    // Likert E5 special mapping (5 → 4)
+    const LIKERT_E5_MAPPING = { 1: 1, 2: 2, 3: 3, 4: 4, 5: 4 };
 
-// Order of questions per enjeu
-const QUESTIONS_PAR_ENJEU = {
-  ethique: ['E1','E2','E3','E4','E5','E6','E7'],
-  juridique: ['J1','J2','J3','J4','J5','J6','J7'],
-  ecologique: ['Eco1','Eco2','Eco3','Eco4','Eco5','Eco6','Eco7'],
-  esprit_critique: ['EC1','EC2','EC3','EC4','EC5','EC6','EC7'],
-  cybersecurite: ['CS1','CS2','CS3','CS4','CS5','CS6','CS7'],
-  democratique: ['D1','D2','D3','D4','D5','D6','D7'],
-  geopolitique: ['G1','G2','G3','G4','G5','G6','G7']
-};
+    // Order of questions per enjeu
+    const QUESTIONS_PAR_ENJEU = {
+      ethique: ['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7'],
+      juridique: ['J1', 'J2', 'J3', 'J4', 'J5', 'J6', 'J7'],
+      ecologique: ['Eco1', 'Eco2', 'Eco3', 'Eco4', 'Eco5', 'Eco6', 'Eco7'],
+      esprit_critique: ['EC1', 'EC2', 'EC3', 'EC4', 'EC5', 'EC6', 'EC7'],
+      cybersecurite: ['CS1', 'CS2', 'CS3', 'CS4', 'CS5', 'CS6', 'CS7'],
+      democratique: ['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7'],
+      geopolitique: ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7']
+    };
 
-const SCORED_QUESTIONS_PAR_ENJEU = {
-  ethique: ['E1','E2','E3','E4','E5','E6'],
-  juridique: ['J1','J2','J3','J4','J5','J6'],
-  ecologique: ['Eco1','Eco2','Eco3','Eco4','Eco5','Eco6'],
-  esprit_critique: ['EC1','EC2','EC3','EC4','EC5','EC6'],
-  cybersecurite: ['CS1','CS2','CS3','CS4','CS5','CS6'],
-  democratique: ['D1','D2','D3','D4','D5','D6'],
-  geopolitique: ['G1','G2','G3','G4','G5','G6']
-};
+    const SCORED_QUESTIONS_PAR_ENJEU = {
+      ethique: ['E1', 'E2', 'E3', 'E4', 'E5', 'E6'],
+      juridique: ['J1', 'J2', 'J3', 'J4', 'J5', 'J6'],
+      ecologique: ['Eco1', 'Eco2', 'Eco3', 'Eco4', 'Eco5', 'Eco6'],
+      esprit_critique: ['EC1', 'EC2', 'EC3', 'EC4', 'EC5', 'EC6'],
+      cybersecurite: ['CS1', 'CS2', 'CS3', 'CS4', 'CS5', 'CS6'],
+      democratique: ['D1', 'D2', 'D3', 'D4', 'D5', 'D6'],
+      geopolitique: ['G1', 'G2', 'G3', 'G4', 'G5', 'G6']
+    };
 
-/* ==========================================================
-   STATE
-   ========================================================== */
-const state = {
-  ecranActuel: 0,
-  consentement: false,
-  sansIA: false,
-  netlifyMode: false,
-  apiKey: CONFIG.API_KEY || '',
-  apiProvider: CONFIG.API_PROVIDER || '',
-  apiModel: CONFIG.API_MODEL || '',
-  apiCustomUrl: CONFIG.API_CUSTOM_URL || '',
-  profil_entree: null,
-  contexte_ecole: null,
-  reponses: {},
-  scores: {
-    ethique: null, juridique: null, ecologique: null, esprit_critique: null,
-    cybersecurite: null, democratique: null, geopolitique: null
-  },
-  scores_normalises: {},
-  profils_dominants: [],
-  angles_morts: [],
-  reponses_ouvertes: { E7: '', J7: '', Eco7: '', EC7: '', CS7: '', D7: '', G7: '' },
-  boussole: { B1_dominants: '', B2_angles_morts: '', B3_attente: '', B4_question: '' },
-  rapport: '',
-  rapportError: null,
-  session_id: null
-};
+    /* ==========================================================
+       STATE
+       ========================================================== */
+    const state = {
+      ecranActuel: 0,
+      consentement: false,
+      sansIA: false,
+      netlifyMode: false,
+      apiKey: CONFIG.API_KEY || '',
+      apiProvider: CONFIG.API_PROVIDER || '',
+      apiModel: CONFIG.API_MODEL || '',
+      apiCustomUrl: CONFIG.API_CUSTOM_URL || '',
+      profil_entree: null,
+      contexte_ecole: null,
+      reponses: {},
+      scores: {
+        ethique: null, juridique: null, ecologique: null, esprit_critique: null,
+        cybersecurite: null, democratique: null, geopolitique: null
+      },
+      scores_normalises: {},
+      profils_dominants: [],
+      angles_morts: [],
+      reponses_ouvertes: { E7: '', J7: '', Eco7: '', EC7: '', CS7: '', D7: '', G7: '' },
+      boussole: { B1_dominants: '', B2_angles_morts: '', B3_attente: '', B4_question: '' },
+      rapport: '',
+      rapportError: null,
+      session_id: null
+    };
 
-const mappingM1 = { A: 'debutant', B: 'observateur', C: 'experimentateur', D: 'integrateur' };
-const mappingM2 = { A: 'absent', B: 'evite', C: 'emergent', D: 'present' };
+    const mappingM1 = { A: 'debutant', B: 'observateur', C: 'experimentateur', D: 'integrateur' };
+    const mappingM2 = { A: 'absent', B: 'evite', C: 'emergent', D: 'present' };
 
-/* ==========================================================
-   UTILITAIRES
-   ========================================================== */
+    /* ==========================================================
+       UTILITAIRES
+       ========================================================== */
 
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
 
-function letterFromIndex(i) { return ['A','B','C','D','E','F'][i]; }
+    function letterFromIndex(i) { return ['A', 'B', 'C', 'D', 'E', 'F'][i]; }
 
-/* ==========================================================
-   SCORING
-   ========================================================== */
-function getScoreBrut(qid, reponse) {
-  const q = QUESTIONS[qid];
-  if (!q) return null;
-  if (q.type === 'choix') {
-    return q.score[reponse] ?? null;
-  }
-  if (q.type === 'likert') {
-    if (qid === 'E5') return LIKERT_E5_MAPPING[reponse] ?? reponse;
-    return reponse;
-  }
-  return null;
-}
-
-function normaliserScore(brut, q) {
-  if (q.type === 'likert' && q.normalizeMax === 5 && QUESTIONS[Object.keys(QUESTIONS).find(k=>QUESTIONS[k]===q)] !== QUESTIONS.E5) {
-    // J5, Eco3, EC4, CS3, D2, G3 : 1→5 normalisé
-    return ((brut - 1) / (5 - 1)) * 100;
-  }
-  // E5 a été ramené à 1→4 par le mapping → on normalise sur 1→4
-  return ((brut - 1) / (4 - 1)) * 100;
-}
-
-function calculerScoresEnjeux() {
-  for (const enjeuId in SCORED_QUESTIONS_PAR_ENJEU) {
-    const ids = SCORED_QUESTIONS_PAR_ENJEU[enjeuId];
-    const scoresNorm = [];
-    const scoresBruts = [];
-    for (const qid of ids) {
-      const rep = state.reponses[qid];
-      if (rep === undefined || rep === null) continue;
-      const brut = getScoreBrut(qid, rep);
-      if (brut === null || brut === 0) continue;
+    /* ==========================================================
+       SCORING
+       ========================================================== */
+    function getScoreBrut(qid, reponse) {
       const q = QUESTIONS[qid];
-      let norm;
-      if (q.type === 'likert' && qid !== 'E5') {
-        norm = ((brut - 1) / (5 - 1)) * 100;
-      } else {
-        norm = ((brut - 1) / (4 - 1)) * 100;
+      if (!q) return null;
+      if (q.type === 'choix') {
+        return q.score[reponse] ?? null;
       }
-      scoresNorm.push(norm);
-      scoresBruts.push(brut);
+      if (q.type === 'likert') {
+        if (qid === 'E5') return LIKERT_E5_MAPPING[reponse] ?? reponse;
+        return reponse;
+      }
+      return null;
     }
-    if (scoresNorm.length === 0) {
-      state.scores_normalises[enjeuId] = 0;
-      state.scores[enjeuId] = 0;
-    } else {
-      state.scores_normalises[enjeuId] = Math.round(scoresNorm.reduce((a,b)=>a+b,0) / scoresNorm.length);
-      state.scores[enjeuId] = state.scores_normalises[enjeuId];
+
+    function normaliserScore(brut, q) {
+      if (q.type === 'likert' && q.normalizeMax === 5 && QUESTIONS[Object.keys(QUESTIONS).find(k => QUESTIONS[k] === q)] !== QUESTIONS.E5) {
+        // J5, Eco3, EC4, CS3, D2, G3 : 1→5 normalisé
+        return ((brut - 1) / (5 - 1)) * 100;
+      }
+      // E5 a été ramené à 1→4 par le mapping → on normalise sur 1→4
+      return ((brut - 1) / (4 - 1)) * 100;
     }
-  }
-  // Profils
-  const sorted = Object.entries(state.scores_normalises).sort((a,b) => b[1] - a[1]);
-  state.profils_dominants = [sorted[0][0], sorted[1][0]];
-  state.angles_morts = [sorted[sorted.length-1][0], sorted[sorted.length-2][0]];
-}
 
-/* ==========================================================
-   GÉNÉRATION DU RAPPORT — 3 modes selon le contexte
-   1. Netlify Function (clé sécurisée côté serveur)
-   2. Proxy local server.py
-   3. Appel direct avec clé utilisateur (fallback)
-   ========================================================== */
-async function genererRapportIndividuel() {
-  const userPayload = {
-    profil_entree: state.profil_entree,
-    contexte_ecole: state.contexte_ecole,
-    scores: state.scores,
-    profils_dominants: state.profils_dominants,
-    angles_morts: state.angles_morts,
-    reponses_ouvertes: state.reponses_ouvertes,
-    boussole: state.boussole
-  };
-
-  // — Mode 1 : Netlify Function —
-  try {
-    const r = await fetch('/.netlify/functions/proxy', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        systemPrompt: PROMPT_SYSTEME_INDIVIDUEL,
-        userContent:  JSON.stringify(userPayload)
-      })
-    });
-    // 404 = pas sur Netlify → on passe au mode suivant
-    if (r.status === 404) throw new Error('netlify_unavailable');
-    if (!r.ok) {
-      const e = await r.json().catch(() => ({}));
-      throw new Error(e?.error?.message || `Netlify proxy ${r.status}`);
+    function calculerScoresEnjeux() {
+      for (const enjeuId in SCORED_QUESTIONS_PAR_ENJEU) {
+        const ids = SCORED_QUESTIONS_PAR_ENJEU[enjeuId];
+        const scoresNorm = [];
+        const scoresBruts = [];
+        for (const qid of ids) {
+          const rep = state.reponses[qid];
+          if (rep === undefined || rep === null) continue;
+          const brut = getScoreBrut(qid, rep);
+          if (brut === null || brut === 0) continue;
+          const q = QUESTIONS[qid];
+          let norm;
+          if (q.type === 'likert' && qid !== 'E5') {
+            norm = ((brut - 1) / (5 - 1)) * 100;
+          } else {
+            norm = ((brut - 1) / (4 - 1)) * 100;
+          }
+          scoresNorm.push(norm);
+          scoresBruts.push(brut);
+        }
+        if (scoresNorm.length === 0) {
+          state.scores_normalises[enjeuId] = 0;
+          state.scores[enjeuId] = 0;
+        } else {
+          state.scores_normalises[enjeuId] = Math.round(scoresNorm.reduce((a, b) => a + b, 0) / scoresNorm.length);
+          state.scores[enjeuId] = state.scores_normalises[enjeuId];
+        }
+      }
+      // Profils
+      const sorted = Object.entries(state.scores_normalises).sort((a, b) => b[1] - a[1]);
+      state.profils_dominants = [sorted[0][0], sorted[1][0]];
+      state.angles_morts = [sorted[sorted.length - 1][0], sorted[sorted.length - 2][0]];
     }
-    const d = await r.json();
-    return d.text;
-  } catch (err) {
-    if (err.message !== 'netlify_unavailable' && !err.message.includes('Failed to fetch')) throw err;
-  }
 
-  // — Mode 2 : proxy local server.py —
-  const provider = state.apiProvider || detecterProvider(state.apiKey);
-  const pconf    = PROVIDERS[provider] || PROVIDERS.anthropic;
-  const model    = state.apiModel || pconf.defaultModel;
-  const apiUrl   = provider === 'compatible'
-    ? (state.apiCustomUrl.replace(/\/$/, '') + '/chat/completions')
-    : pconf.url;
+    /* ==========================================================
+       GÉNÉRATION DU RAPPORT — 3 modes selon le contexte
+       1. Netlify Function (clé sécurisée côté serveur)
+       2. Proxy local server.py
+       3. Appel direct avec clé utilisateur (fallback)
+       ========================================================== */
+    async function genererRapportIndividuel() {
+      const userPayload = {
+        profil_entree: state.profil_entree,
+        contexte_ecole: state.contexte_ecole,
+        scores: state.scores,
+        profils_dominants: state.profils_dominants,
+        angles_morts: state.angles_morts,
+        reponses_ouvertes: state.reponses_ouvertes,
+        boussole: state.boussole
+      };
 
-  const isAnthropic = provider === 'anthropic';
-  const apiBody = isAnthropic
-    ? { model, max_tokens: CONFIG.API_MAX_TOKENS, temperature: CONFIG.API_TEMPERATURE,
-        system: PROMPT_SYSTEME_INDIVIDUEL,
-        messages: [{ role: 'user', content: JSON.stringify(userPayload) }] }
-    : { model, max_tokens: CONFIG.API_MAX_TOKENS, temperature: CONFIG.API_TEMPERATURE,
-        messages: [{ role: 'system', content: PROMPT_SYSTEME_INDIVIDUEL },
-                   { role: 'user',   content: JSON.stringify(userPayload) }] };
-  const apiHeaders = isAnthropic
-    ? { 'x-api-key': state.apiKey, 'anthropic-version': '2023-06-01' }
-    : { 'Authorization': 'Bearer ' + state.apiKey };
+      // — Mode 1 : Netlify Function —
+      try {
+        const r = await fetch('/.netlify/functions/proxy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            systemPrompt: PROMPT_SYSTEME_INDIVIDUEL,
+            userContent: JSON.stringify(userPayload)
+          })
+        });
+        // 404 = pas sur Netlify → on passe au mode suivant
+        if (r.status === 404) throw new Error('netlify_unavailable');
+        if (!r.ok) {
+          const e = await r.json().catch(() => ({}));
+          throw new Error(e?.error?.message || `Netlify proxy ${r.status}`);
+        }
+        const d = await r.json();
+        return d.text;
+      } catch (err) {
+        if (err.message !== 'netlify_unavailable' && !err.message.includes('Failed to fetch')) throw err;
+      }
 
-  try {
-    const r = await fetch('/api/proxy', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: apiUrl, headers: apiHeaders, body: apiBody })
-    });
-    if (r.status !== 404 && r.status !== 0) {
+      // — Mode 2 : proxy local server.py —
+      const provider = state.apiProvider || detecterProvider(state.apiKey);
+      const pconf = PROVIDERS[provider] || PROVIDERS.anthropic;
+      const model = state.apiModel || pconf.defaultModel;
+      const apiUrl = provider === 'compatible'
+        ? (state.apiCustomUrl.replace(/\/$/, '') + '/chat/completions')
+        : pconf.url;
+
+      const isAnthropic = provider === 'anthropic';
+      const apiBody = isAnthropic
+        ? {
+          model, max_tokens: CONFIG.API_MAX_TOKENS, temperature: CONFIG.API_TEMPERATURE,
+          system: PROMPT_SYSTEME_INDIVIDUEL,
+          messages: [{ role: 'user', content: JSON.stringify(userPayload) }]
+        }
+        : {
+          model, max_tokens: CONFIG.API_MAX_TOKENS, temperature: CONFIG.API_TEMPERATURE,
+          messages: [{ role: 'system', content: PROMPT_SYSTEME_INDIVIDUEL },
+          { role: 'user', content: JSON.stringify(userPayload) }]
+        };
+      const apiHeaders = isAnthropic
+        ? { 'x-api-key': state.apiKey, 'anthropic-version': '2023-06-01' }
+        : { 'Authorization': 'Bearer ' + state.apiKey };
+
+      try {
+        const r = await fetch('/api/proxy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: apiUrl, headers: apiHeaders, body: apiBody })
+        });
+        if (r.status !== 404 && r.status !== 0) {
+          if (!r.ok) {
+            const e = await r.json().catch(() => ({}));
+            throw new Error(e?.error?.message || `Proxy local ${r.status}`);
+          }
+          const d = await r.json();
+          return isAnthropic ? d.content[0].text : d.choices[0].message.content;
+        }
+      } catch (err) {
+        if (!err.message.includes('Failed to fetch') && !err.message.includes('404')) throw err;
+      }
+
+      // — Mode 3 : appel direct (fallback) —
+      const r = await fetch(apiUrl, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          ...apiHeaders,
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify(apiBody)
+      });
       if (!r.ok) {
         const e = await r.json().catch(() => ({}));
-        throw new Error(e?.error?.message || `Proxy local ${r.status}`);
+        throw new Error(e?.error?.message || `API ${r.status}`);
       }
       const d = await r.json();
       return isAnthropic ? d.content[0].text : d.choices[0].message.content;
     }
-  } catch (err) {
-    if (!err.message.includes('Failed to fetch') && !err.message.includes('404')) throw err;
-  }
-
-  // — Mode 3 : appel direct (fallback) —
-  const r = await fetch(apiUrl, {
-    method: 'POST',
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-      ...apiHeaders,
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
-    body: JSON.stringify(apiBody)
-  });
-  if (!r.ok) {
-    const e = await r.json().catch(() => ({}));
-    throw new Error(e?.error?.message || `API ${r.status}`);
-  }
-  const d = await r.json();
-  return isAnthropic ? d.content[0].text : d.choices[0].message.content;
-}
 
 
-/* ==========================================================
-   PARSEUR MARKDOWN MINIMAL
-   ========================================================== */
-function renderMarkdown(md) {
-  const lines = md.split('\n');
-  let html = '';
-  let inList = false;
-  let paraBuf = [];
+    /* ==========================================================
+       PARSEUR MARKDOWN MINIMAL
+       ========================================================== */
+    function renderMarkdown(md) {
+      const lines = md.split('\n');
+      let html = '';
+      let inList = false;
+      let paraBuf = [];
 
-  function flushPara() {
-    if (paraBuf.length) {
-      html += '<p>' + inlineFormat(paraBuf.join(' ')) + '</p>';
-      paraBuf = [];
-    }
-  }
-  function closeList() { if (inList) { html += '</ul>'; inList = false; } }
+      function flushPara() {
+        if (paraBuf.length) {
+          html += '<p>' + inlineFormat(paraBuf.join(' ')) + '</p>';
+          paraBuf = [];
+        }
+      }
+      function closeList() { if (inList) { html += '</ul>'; inList = false; } }
 
-  function inlineFormat(s) {
-    s = escapeHtml(s);
-    s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
-    return s;
-  }
+      function inlineFormat(s) {
+        s = escapeHtml(s);
+        s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+        return s;
+      }
 
-  for (let raw of lines) {
-    const line = raw.trim();
-    if (!line) {
-      flushPara();
-      closeList();
-      continue;
-    }
-    if (line.startsWith('### ')) {
+      for (let raw of lines) {
+        const line = raw.trim();
+        if (!line) {
+          flushPara();
+          closeList();
+          continue;
+        }
+        if (line.startsWith('### ')) {
+          flushPara(); closeList();
+          html += '<h3>' + inlineFormat(line.slice(4)) + '</h3>';
+        } else if (line.startsWith('## ')) {
+          flushPara(); closeList();
+          html += '<h2>' + inlineFormat(line.slice(3)) + '</h2>';
+        } else if (line.startsWith('# ')) {
+          flushPara(); closeList();
+          html += '<h2>' + inlineFormat(line.slice(2)) + '</h2>';
+        } else if (line.startsWith('- ') || line.startsWith('* ')) {
+          flushPara();
+          if (!inList) { html += '<ul>'; inList = true; }
+          html += '<li>' + inlineFormat(line.slice(2)) + '</li>';
+        } else {
+          closeList();
+          paraBuf.push(line);
+        }
+      }
       flushPara(); closeList();
-      html += '<h3>' + inlineFormat(line.slice(4)) + '</h3>';
-    } else if (line.startsWith('## ')) {
-      flushPara(); closeList();
-      html += '<h2>' + inlineFormat(line.slice(3)) + '</h2>';
-    } else if (line.startsWith('# ')) {
-      flushPara(); closeList();
-      html += '<h2>' + inlineFormat(line.slice(2)) + '</h2>';
-    } else if (line.startsWith('- ') || line.startsWith('* ')) {
-      flushPara();
-      if (!inList) { html += '<ul>'; inList = true; }
-      html += '<li>' + inlineFormat(line.slice(2)) + '</li>';
-    } else {
-      closeList();
-      paraBuf.push(line);
+      return html;
     }
-  }
-  flushPara(); closeList();
-  return html;
-}
 
-/* ==========================================================
-   RENDU DES ÉCRANS
-   ========================================================== */
-const app = document.getElementById('app');
+    /* ==========================================================
+       RENDU DES ÉCRANS
+       ========================================================== */
+    const app = document.getElementById('app');
 
-function setEcran(n) {
-  state.ecranActuel = n;
-  render();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+    function setEcran(n) {
+      state.ecranActuel = n;
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-function progress(step, total) {
-  const pct = Math.round((step / total) * 100);
-  return `
+    function progress(step, total) {
+      const pct = Math.round((step / total) * 100);
+      return `
     <div class="progress-label">Étape ${step} / ${total}</div>
     <div class="progress-bar-container"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
   `;
-}
+    }
 
-function separateur(orn) {
-  const o = orn || '❧';
-  return `<div class="separateur"><span>${o}</span></div>`;
-}
+    function separateur(orn) {
+      const o = orn || '❧';
+      return `<div class="separateur"><span>${o}</span></div>`;
+    }
 
-function render() {
-  const n = state.ecranActuel;
-  if (n === 0) renderEcranConsentement();
-  else if (n === 1) renderEcranMiseEnRoute();
-  else if (n >= 2 && n <= 8) renderEcranEnjeu(n - 2);
-  else if (n === 9) renderEcranBoussole();
-  else if (n === 10) renderEcranGeneration();
-  else if (n === 11) renderEcranRapport();
-}
+    function render() {
+      const n = state.ecranActuel;
+      if (n === 0) renderEcranConsentement();
+      else if (n === 1) renderEcranMiseEnRoute();
+      else if (n >= 2 && n <= 8) renderEcranEnjeu(n - 2);
+      else if (n === 9) renderEcranBoussole();
+      else if (n === 10) renderEcranGeneration();
+      else if (n === 11) renderEcranRapport();
+    }
 
-/* ----- Écran 0 : Consentement ----- */
-function renderEcranConsentement() {
-  app.innerHTML = `
+    /* ----- Écran 0 : Consentement ----- */
+    function renderEcranConsentement() {
+      app.innerHTML = `
     <div class="ecran">
       <div class="surtitre">Formation FWB — Enseignement secondaire</div>
       <h1>Quel utilisateur d'IA es-tu&nbsp;?</h1>
@@ -1270,12 +1700,12 @@ function renderEcranConsentement() {
         <div class="api-key-block">
           <label for="api-provider">Fournisseur d'IA</label>
           <select id="api-provider" style="width:100%;border:2px solid var(--retro-teal);border-radius:8px;padding:8px 10px;font-family:inherit;font-size:14px;background:var(--retro-paper);margin-bottom:10px;">
-            <option value="anthropic" ${state.apiProvider==='anthropic'||!state.apiProvider?'selected':''}>Anthropic (Claude)</option>
-            <option value="openai" ${state.apiProvider==='openai'?'selected':''}>OpenAI (GPT)</option>
-            <option value="compatible" ${state.apiProvider==='compatible'?'selected':''}>Compatible OpenAI (Mistral, Groq, Ollama…)</option>
+            <option value="anthropic" ${state.apiProvider === 'anthropic' || !state.apiProvider ? 'selected' : ''}>Anthropic (Claude)</option>
+            <option value="openai" ${state.apiProvider === 'openai' ? 'selected' : ''}>OpenAI (GPT)</option>
+            <option value="compatible" ${state.apiProvider === 'compatible' ? 'selected' : ''}>Compatible OpenAI (Mistral, Groq, Ollama…)</option>
           </select>
 
-          <div id="custom-url-row" style="display:${state.apiProvider==='compatible'?'block':'none'};margin-bottom:10px;">
+          <div id="custom-url-row" style="display:${state.apiProvider === 'compatible' ? 'block' : 'none'};margin-bottom:10px;">
             <label for="api-custom-url">URL de base de l'API</label>
             <input type="text" id="api-custom-url" placeholder="https://api.mistral.ai/v1" value="${escapeHtml(state.apiCustomUrl)}" autocomplete="off"
               style="width:100%;border:2px solid var(--retro-teal);border-radius:8px;padding:8px 10px;font-family:monospace;font-size:13px;background:var(--retro-paper);">
@@ -1307,59 +1737,59 @@ function renderEcranConsentement() {
       </div>
     </div>
   `;
-  const cb = document.getElementById('consent-cb');
-  const sansIaCb = document.getElementById('sans-ia-cb');
-  const apiBlock = document.getElementById('api-block');
-  const btn = document.getElementById('btn-start');
-  const apiInput = document.getElementById('api-key');
-  const providerSel = document.getElementById('api-provider');
-  const modelInput = document.getElementById('api-model');
-  const customUrlInput = document.getElementById('api-custom-url');
-  const customUrlRow = document.getElementById('custom-url-row');
+      const cb = document.getElementById('consent-cb');
+      const sansIaCb = document.getElementById('sans-ia-cb');
+      const apiBlock = document.getElementById('api-block');
+      const btn = document.getElementById('btn-start');
+      const apiInput = document.getElementById('api-key');
+      const providerSel = document.getElementById('api-provider');
+      const modelInput = document.getElementById('api-model');
+      const customUrlInput = document.getElementById('api-custom-url');
+      const customUrlRow = document.getElementById('custom-url-row');
 
-  cb.addEventListener('change', () => {
-    state.consentement = cb.checked;
-    btn.disabled = !state.consentement;
-  });
-  if (sansIaCb) {
-    sansIaCb.addEventListener('change', () => {
-      state.sansIA = sansIaCb.checked;
-      if (apiBlock) apiBlock.style.display = state.sansIA ? 'none' : 'block';
-    });
-  }
-  if (apiInput) {
-    apiInput.addEventListener('input', () => {
-      state.apiKey = apiInput.value.trim();
-      if (providerSel && !state.apiProvider) {
-        const detected = detecterProvider(state.apiKey);
-        providerSel.value = detected;
-        state.apiProvider = detected;
-        if (customUrlRow) customUrlRow.style.display = detected === 'compatible' ? 'block' : 'none';
-        const ph = PROVIDERS[detected]?.placeholder || 'Votre clé API';
-        apiInput.placeholder = ph;
+      cb.addEventListener('change', () => {
+        state.consentement = cb.checked;
+        btn.disabled = !state.consentement;
+      });
+      if (sansIaCb) {
+        sansIaCb.addEventListener('change', () => {
+          state.sansIA = sansIaCb.checked;
+          if (apiBlock) apiBlock.style.display = state.sansIA ? 'none' : 'block';
+        });
       }
-    });
-  }
-  if (providerSel) {
-    providerSel.addEventListener('change', () => {
-      state.apiProvider = providerSel.value;
-      if (customUrlRow) customUrlRow.style.display = state.apiProvider === 'compatible' ? 'block' : 'none';
-      const pconf = PROVIDERS[state.apiProvider];
-      if (apiInput) apiInput.placeholder = pconf?.placeholder || 'Votre clé API';
-      if (modelInput) modelInput.placeholder = pconf?.defaultModel || '';
-    });
-  }
-  if (modelInput) modelInput.addEventListener('input', () => { state.apiModel = modelInput.value.trim(); });
-  if (customUrlInput) customUrlInput.addEventListener('input', () => { state.apiCustomUrl = customUrlInput.value.trim(); });
-  btn.addEventListener('click', () => {
-    if (!state.consentement) return;
-    setEcran(1);
-  });
-}
+      if (apiInput) {
+        apiInput.addEventListener('input', () => {
+          state.apiKey = apiInput.value.trim();
+          if (providerSel && !state.apiProvider) {
+            const detected = detecterProvider(state.apiKey);
+            providerSel.value = detected;
+            state.apiProvider = detected;
+            if (customUrlRow) customUrlRow.style.display = detected === 'compatible' ? 'block' : 'none';
+            const ph = PROVIDERS[detected]?.placeholder || 'Votre clé API';
+            apiInput.placeholder = ph;
+          }
+        });
+      }
+      if (providerSel) {
+        providerSel.addEventListener('change', () => {
+          state.apiProvider = providerSel.value;
+          if (customUrlRow) customUrlRow.style.display = state.apiProvider === 'compatible' ? 'block' : 'none';
+          const pconf = PROVIDERS[state.apiProvider];
+          if (apiInput) apiInput.placeholder = pconf?.placeholder || 'Votre clé API';
+          if (modelInput) modelInput.placeholder = pconf?.defaultModel || '';
+        });
+      }
+      if (modelInput) modelInput.addEventListener('input', () => { state.apiModel = modelInput.value.trim(); });
+      if (customUrlInput) customUrlInput.addEventListener('input', () => { state.apiCustomUrl = customUrlInput.value.trim(); });
+      btn.addEventListener('click', () => {
+        if (!state.consentement) return;
+        setEcran(1);
+      });
+    }
 
-/* ----- Écran 1 : Mise en route (M1, M2) ----- */
-function renderEcranMiseEnRoute() {
-  app.innerHTML = `
+    /* ----- Écran 1 : Mise en route (M1, M2) ----- */
+    function renderEcranMiseEnRoute() {
+      app.innerHTML = `
     <div class="ecran">
       ${progress(1, 8)}
       <div class="section-header">
@@ -1383,26 +1813,26 @@ function renderEcranMiseEnRoute() {
       </div>
     </div>
   `;
-  attachQuestionHandlers(['M1','M2']);
-  const btn = document.getElementById('btn-next');
-  function check() { btn.disabled = !(state.reponses.M1 && state.reponses.M2); }
-  check();
-  document.getElementById('questions-container').addEventListener('change', check);
-  document.getElementById('questions-container').addEventListener('click', () => setTimeout(check, 0));
-  btn.addEventListener('click', () => {
-    state.profil_entree = mappingM1[state.reponses.M1];
-    state.contexte_ecole = mappingM2[state.reponses.M2];
-    setEcran(2);
-  });
-}
+      attachQuestionHandlers(['M1', 'M2']);
+      const btn = document.getElementById('btn-next');
+      function check() { btn.disabled = !(state.reponses.M1 && state.reponses.M2); }
+      check();
+      document.getElementById('questions-container').addEventListener('change', check);
+      document.getElementById('questions-container').addEventListener('click', () => setTimeout(check, 0));
+      btn.addEventListener('click', () => {
+        state.profil_entree = mappingM1[state.reponses.M1];
+        state.contexte_ecole = mappingM2[state.reponses.M2];
+        setEcran(2);
+      });
+    }
 
-/* ----- Écrans 2-8 : Un enjeu = un écran ----- */
-function renderEcranEnjeu(idx) {
-  const enjeu = ENJEUX[idx];
-  const qids = QUESTIONS_PAR_ENJEU[enjeu.id];
-  const ornements = ['❧','✿','❀','⚘','✾','❁','❃'];
+    /* ----- Écrans 2-8 : Un enjeu = un écran ----- */
+    function renderEcranEnjeu(idx) {
+      const enjeu = ENJEUX[idx];
+      const qids = QUESTIONS_PAR_ENJEU[enjeu.id];
+      const ornements = ['❧', '✿', '❀', '⚘', '✾', '❁', '❃'];
 
-  app.innerHTML = `
+      app.innerHTML = `
     <div class="ecran">
       ${progress(idx + 2, 8)}
       <div class="section-header">
@@ -1416,7 +1846,7 @@ function renderEcranEnjeu(idx) {
       <div id="questions-container">
         ${qids.map((qid, i) => renderQuestionCard(qid, i + 1)).join('')}
       </div>
-      ${separateur(ornements[(idx+1) % ornements.length])}
+      ${separateur(ornements[(idx + 1) % ornements.length])}
       <div class="button-row">
         <button class="btn-primary" id="btn-next" disabled>
           <span class="btn-label">${idx === 6 ? 'Vers la boussole' : 'Suivant'}</span>
@@ -1425,22 +1855,22 @@ function renderEcranEnjeu(idx) {
       </div>
     </div>
   `;
-  attachQuestionHandlers(qids);
-  const btn = document.getElementById('btn-next');
-  // Required = scored questions
-  const required = SCORED_QUESTIONS_PAR_ENJEU[enjeu.id];
-  function check() {
-    btn.disabled = !required.every(qid => state.reponses[qid] !== undefined && state.reponses[qid] !== null);
-  }
-  check();
-  document.getElementById('questions-container').addEventListener('click', () => setTimeout(check, 0));
-  document.getElementById('questions-container').addEventListener('input', check);
-  btn.addEventListener('click', () => setEcran(state.ecranActuel + 1));
-}
+      attachQuestionHandlers(qids);
+      const btn = document.getElementById('btn-next');
+      // Required = scored questions
+      const required = SCORED_QUESTIONS_PAR_ENJEU[enjeu.id];
+      function check() {
+        btn.disabled = !required.every(qid => state.reponses[qid] !== undefined && state.reponses[qid] !== null);
+      }
+      check();
+      document.getElementById('questions-container').addEventListener('click', () => setTimeout(check, 0));
+      document.getElementById('questions-container').addEventListener('input', check);
+      btn.addEventListener('click', () => setEcran(state.ecranActuel + 1));
+    }
 
-/* ----- Écran 9 : Boussole ----- */
-function renderEcranBoussole() {
-  app.innerHTML = `
+    /* ----- Écran 9 : Boussole ----- */
+    function renderEcranBoussole() {
+      app.innerHTML = `
     <div class="ecran">
       ${progress(8, 8)}
       <div class="section-header">
@@ -1469,31 +1899,31 @@ function renderEcranBoussole() {
       </div>
     </div>
   `;
-  ['B1_dominants','B2_angles_morts','B3_attente','B4_question'].forEach(k => {
-    const ta = document.getElementById('ta-' + k);
-    ta.addEventListener('input', () => { state.boussole[k] = ta.value; });
-  });
-  document.getElementById('btn-generate').addEventListener('click', () => {
-    if (!state.apiKey) {
-      alert("Aucune clé API n'est configurée. Renseignez-en une à l'écran d'accueil ou demandez au formateur de pré-configurer le fichier.");
-      return;
+      ['B1_dominants', 'B2_angles_morts', 'B3_attente', 'B4_question'].forEach(k => {
+        const ta = document.getElementById('ta-' + k);
+        ta.addEventListener('input', () => { state.boussole[k] = ta.value; });
+      });
+      document.getElementById('btn-generate').addEventListener('click', () => {
+        if (!state.apiKey && !state.sansIA) {
+          alert("Aucune clé API n'est configurée. Renseignez-en une à l'écran d'accueil ou demandez au formateur de pré-configurer le fichier.");
+          return;
+        }
+        setEcran(10);
+      });
     }
-    setEcran(10);
-  });
-}
 
-function boussoleQuestion(key, label) {
-  return `
+    function boussoleQuestion(key, label) {
+      return `
     <div class="carte-question">
       <p class="q-text">${escapeHtml(label)}</p>
       <textarea id="ta-${key}" placeholder="Votre réponse (optionnelle)…">${escapeHtml(state.boussole[key] || '')}</textarea>
     </div>
   `;
-}
+    }
 
-/* ----- Écran 10 : Génération ----- */
-function renderEcranGeneration() {
-  app.innerHTML = `
+    /* ----- Écran 10 : Génération ----- */
+    function renderEcranGeneration() {
+      app.innerHTML = `
     <div class="ecran">
       <div class="loader-container">
         <div class="loader-orbe"></div>
@@ -1501,59 +1931,59 @@ function renderEcranGeneration() {
       </div>
     </div>
   `;
-  const messages = [
-    "Cartographie de vos profils dominants…",
-    "Identification de vos angles morts…",
-    "Rédaction de votre rapport personnalisé…",
-    "Mise en forme finale…"
-  ];
-  let i = 0;
-  const interval = setInterval(() => {
-    const el = document.getElementById('loader-text');
-    if (el) el.textContent = messages[i % messages.length];
-    i++;
-  }, 2200);
+      const messages = [
+        "Cartographie de vos profils dominants…",
+        "Identification de vos angles morts…",
+        "Rédaction de votre rapport personnalisé…",
+        "Mise en forme finale…"
+      ];
+      let i = 0;
+      const interval = setInterval(() => {
+        const el = document.getElementById('loader-text');
+        if (el) el.textContent = messages[i % messages.length];
+        i++;
+      }, 2200);
 
-  // Calculer scores et profils
-  calculerScoresEnjeux();
+      // Calculer scores et profils
+      calculerScoresEnjeux();
 
-  if (state.sansIA) {
-    clearInterval(interval);
-    state.rapport = '';
-    state.rapportError = null;
-    setEcran(11);
-    return;
-  }
+      if (state.sansIA) {
+        clearInterval(interval);
+        state.rapport = '';
+        state.rapportError = null;
+        setEcran(11);
+        return;
+      }
 
-  if (!state.apiKey) {
-    clearInterval(interval);
-    state.rapportError = "Aucune clé API configurée. Revenez à l'accueil et renseignez une clé, ou cochez « Sans analyse IA ».";
-    setEcran(11);
-    return;
-  }
+      if (!state.apiKey) {
+        clearInterval(interval);
+        state.rapportError = "Aucune clé API configurée. Revenez à l'accueil et renseignez une clé, ou cochez « Sans analyse IA ».";
+        setEcran(11);
+        return;
+      }
 
-  const pAPI = genererRapportIndividuel();
+      const pAPI = genererRapportIndividuel();
 
-  Promise.allSettled([pAPI]).then(([rApi]) => {
-    clearInterval(interval);
-    if (rApi.status === 'fulfilled') {
-      state.rapport = rApi.value;
-      state.rapportError = null;
-    } else {
-      const errMsg = rApi.reason?.message || String(rApi.reason);
-      const isCors = errMsg.toLowerCase().includes('failed to fetch') || errMsg.toLowerCase().includes('network');
-      console.error('[API Error]', rApi.reason);
-      state.rapportError = "Une erreur est survenue lors de la génération du rapport individuel.\n\nDétail : " + errMsg
-        + (isCors ? "\n\n⚠️ Causes possibles :\n• Brave Shields pas encore désactivés → icône 🦁 dans la barre d'adresse\n• Clé API invalide ou expirée\n• Connexion réseau instable\n\nOuvrez la console (F12) pour plus de détails." : "");
+      Promise.allSettled([pAPI]).then(([rApi]) => {
+        clearInterval(interval);
+        if (rApi.status === 'fulfilled') {
+          state.rapport = rApi.value;
+          state.rapportError = null;
+        } else {
+          const errMsg = rApi.reason?.message || String(rApi.reason);
+          const isCors = errMsg.toLowerCase().includes('failed to fetch') || errMsg.toLowerCase().includes('network');
+          console.error('[API Error]', rApi.reason);
+          state.rapportError = "Une erreur est survenue lors de la génération du rapport individuel.\n\nDétail : " + errMsg
+            + (isCors ? "\n\n⚠️ Causes possibles :\n• Brave Shields pas encore désactivés → icône 🦁 dans la barre d'adresse\n• Clé API invalide ou expirée\n• Connexion réseau instable\n\nOuvrez la console (F12) pour plus de détails." : "");
+        }
+        setEcran(11);
+      });
     }
-    setEcran(11);
-  });
-}
 
-/* ----- Écran 11 : Rapport ----- */
-function renderEcranRapport() {
-  const radarSvg = buildRadarSVG();
-  const scoresList = Object.entries(state.scores_normalises).map(([id, val]) => `
+    /* ----- Écran 11 : Rapport ----- */
+    function renderEcranRapport() {
+      const radarSvg = buildRadarSVG();
+      const scoresList = Object.entries(state.scores_normalises).map(([id, val]) => `
     <div class="score-row">
       <div class="score-row-head">
         <span class="nom">${NOM_ENJEUX_AFFICHE[id]}</span>
@@ -1563,16 +1993,16 @@ function renderEcranRapport() {
     </div>
   `).join('');
 
-  const dom = state.profils_dominants.map(id => NOM_ENJEUX_AFFICHE[id]).join(' · ');
-  const ang = state.angles_morts.map(id => NOM_ENJEUX_AFFICHE[id]).join(' · ');
+      const dom = state.profils_dominants.map(id => NOM_ENJEUX_AFFICHE[id]).join(' · ');
+      const ang = state.angles_morts.map(id => NOM_ENJEUX_AFFICHE[id]).join(' · ');
 
-  const rapportHtml = state.rapportError
-    ? `<div class="error-box">${escapeHtml(state.rapportError).replace(/\n/g,'<br>')}<br><br>
+      const rapportHtml = state.rapportError
+        ? `<div class="error-box">${escapeHtml(state.rapportError).replace(/\n/g, '<br>')}<br><br>
          <button class="btn-secondary no-print" id="btn-retry">Réessayer</button>
        </div>`
-    : renderMarkdown(state.rapport);
+        : renderMarkdown(state.rapport);
 
-  app.innerHTML = `
+      app.innerHTML = `
     <div class="ecran">
       <div class="surtitre">Votre rapport personnel</div>
       <h1>Votre profil d'utilisateur·rice de l'IA</h1>
@@ -1615,39 +2045,38 @@ function renderEcranRapport() {
       </div>
     </div>
   `;
-  const btnPrint = document.getElementById('btn-print');
-  if (btnPrint) btnPrint.addEventListener('click', () => window.print());
-  const btnRestart = document.getElementById('btn-restart');
-  if (btnRestart) btnRestart.addEventListener('click', () => location.reload());
-  const btnRetry = document.getElementById('btn-retry');
-  if (btnRetry) btnRetry.addEventListener('click', () => setEcran(10));
-}
+      const btnPrint = document.getElementById('btn-print');
+      if (btnPrint) btnPrint.addEventListener('click', () => window.print());
+      const btnRestart = document.getElementById('btn-restart');
+      if (btnRestart) btnRestart.addEventListener('click', () => location.reload());
+      const btnRetry = document.getElementById('btn-retry');
+      if (btnRetry) btnRetry.addEventListener('click', () => setEcran(10));
+    }
 
-/* ==========================================================
-   QUESTIONS — RENDU
-   ========================================================== */
-function renderQuestionCard(qid, num) {
-  const q = QUESTIONS[qid];
-  if (!q) return '';
-  let inner = '';
-  if (q.type === 'choix') {
-    inner = `<div class="options" data-qid="${qid}">${
-      q.options.map((opt, i) => {
-        const letter = letterFromIndex(i);
-        const sel = state.reponses[qid] === letter ? 'selected' : '';
-        return `
+    /* ==========================================================
+       QUESTIONS — RENDU
+       ========================================================== */
+    function renderQuestionCard(qid, num) {
+      const q = QUESTIONS[qid];
+      if (!q) return '';
+      let inner = '';
+      if (q.type === 'choix') {
+        inner = `<div class="options" data-qid="${qid}">${q.options.map((opt, i) => {
+          const letter = letterFromIndex(i);
+          const sel = state.reponses[qid] === letter ? 'selected' : '';
+          return `
           <label class="option ${sel}" data-letter="${letter}">
             <span class="option-lettre">${letter}</span>
             <span class="option-text">${escapeHtml(opt)}</span>
           </label>
         `;
-      }).join('')
-    }</div>`;
-  } else if (q.type === 'likert') {
-    const cur = state.reponses[qid];
-    inner = `
+        }).join('')
+          }</div>`;
+      } else if (q.type === 'likert') {
+        const cur = state.reponses[qid];
+        inner = `
       <div class="likert-container" data-qid="${qid}">
-        ${[1,2,3,4,5].map(v => `
+        ${[1, 2, 3, 4, 5].map(v => `
           <div class="likert-option ${cur === v ? 'selected' : ''}" data-value="${v}">${v}</div>
         `).join('')}
       </div>
@@ -1656,101 +2085,101 @@ function renderQuestionCard(qid, num) {
         <span>${escapeHtml(q.labels[1])}</span>
       </div>
     `;
-  } else if (q.type === 'ouverte') {
-    inner = `<textarea data-qid="${qid}" placeholder="${escapeHtml(q.placeholder || '')}">${escapeHtml(state.reponses_ouvertes[qid] || '')}</textarea>`;
-  }
-  const help = q.help ? `<div class="q-help">${escapeHtml(q.help)}</div>` : '';
-  return `
+      } else if (q.type === 'ouverte') {
+        inner = `<textarea data-qid="${qid}" placeholder="${escapeHtml(q.placeholder || '')}">${escapeHtml(state.reponses_ouvertes[qid] || '')}</textarea>`;
+      }
+      const help = q.help ? `<div class="q-help">${escapeHtml(q.help)}</div>` : '';
+      return `
     <div class="carte-question">
       <p class="q-text"><span class="q-num">${qid}</span>${escapeHtml(q.text)}</p>
       ${help}
       ${inner}
     </div>
   `;
-}
+    }
 
-function attachQuestionHandlers(qids) {
-  const container = document.getElementById('questions-container');
-  qids.forEach(qid => {
-    const q = QUESTIONS[qid];
-    if (q.type === 'choix') {
-      const opts = container.querySelectorAll(`.options[data-qid="${qid}"] .option`);
-      opts.forEach(el => {
-        el.addEventListener('click', () => {
-          opts.forEach(o => o.classList.remove('selected'));
-          el.classList.add('selected');
-          state.reponses[qid] = el.dataset.letter;
-        });
+    function attachQuestionHandlers(qids) {
+      const container = document.getElementById('questions-container');
+      qids.forEach(qid => {
+        const q = QUESTIONS[qid];
+        if (q.type === 'choix') {
+          const opts = container.querySelectorAll(`.options[data-qid="${qid}"] .option`);
+          opts.forEach(el => {
+            el.addEventListener('click', () => {
+              opts.forEach(o => o.classList.remove('selected'));
+              el.classList.add('selected');
+              state.reponses[qid] = el.dataset.letter;
+            });
+          });
+        } else if (q.type === 'likert') {
+          const opts = container.querySelectorAll(`.likert-container[data-qid="${qid}"] .likert-option`);
+          opts.forEach(el => {
+            el.addEventListener('click', () => {
+              opts.forEach(o => o.classList.remove('selected'));
+              el.classList.add('selected');
+              state.reponses[qid] = parseInt(el.dataset.value, 10);
+            });
+          });
+        } else if (q.type === 'ouverte') {
+          const ta = container.querySelector(`textarea[data-qid="${qid}"]`);
+          if (ta) {
+            ta.addEventListener('input', () => {
+              state.reponses_ouvertes[qid] = ta.value;
+            });
+          }
+        }
       });
-    } else if (q.type === 'likert') {
-      const opts = container.querySelectorAll(`.likert-container[data-qid="${qid}"] .likert-option`);
-      opts.forEach(el => {
-        el.addEventListener('click', () => {
-          opts.forEach(o => o.classList.remove('selected'));
-          el.classList.add('selected');
-          state.reponses[qid] = parseInt(el.dataset.value, 10);
-        });
-      });
-    } else if (q.type === 'ouverte') {
-      const ta = container.querySelector(`textarea[data-qid="${qid}"]`);
-      if (ta) {
-        ta.addEventListener('input', () => {
-          state.reponses_ouvertes[qid] = ta.value;
-        });
+    }
+
+    /* ==========================================================
+       RADAR SVG
+       ========================================================== */
+    function buildRadarSVG() {
+      const ids = ['ethique', 'juridique', 'ecologique', 'esprit_critique', 'cybersecurite', 'democratique', 'geopolitique'];
+      const labels = ids.map(i => NOM_ENJEUX_AFFICHE[i]);
+      const values = ids.map(i => state.scores_normalises[i] || 0);
+      const N = ids.length;
+      const cx = 200, cy = 200, R = 140;
+      const angleStep = (2 * Math.PI) / N;
+
+      function point(i, ratio) {
+        const a = -Math.PI / 2 + i * angleStep;
+        return [cx + Math.cos(a) * R * ratio, cy + Math.sin(a) * R * ratio];
       }
-    }
-  });
-}
 
-/* ==========================================================
-   RADAR SVG
-   ========================================================== */
-function buildRadarSVG() {
-  const ids = ['ethique','juridique','ecologique','esprit_critique','cybersecurite','democratique','geopolitique'];
-  const labels = ids.map(i => NOM_ENJEUX_AFFICHE[i]);
-  const values = ids.map(i => state.scores_normalises[i] || 0);
-  const N = ids.length;
-  const cx = 200, cy = 200, R = 140;
-  const angleStep = (2 * Math.PI) / N;
+      let webs = '';
+      for (let lvl = 1; lvl <= 5; lvl++) {
+        const ratio = lvl / 5;
+        const pts = [];
+        for (let i = 0; i < N; i++) {
+          const [x, y] = point(i, ratio);
+          pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+        }
+        webs += `<polygon points="${pts.join(' ')}" fill="none" stroke="rgba(18,118,118,0.18)" stroke-width="1"/>`;
+      }
 
-  function point(i, ratio) {
-    const a = -Math.PI / 2 + i * angleStep;
-    return [cx + Math.cos(a) * R * ratio, cy + Math.sin(a) * R * ratio];
-  }
+      let axes = '';
+      for (let i = 0; i < N; i++) {
+        const [x, y] = point(i, 1);
+        axes += `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="rgba(18,118,118,0.25)" stroke-width="1"/>`;
+      }
 
-  let webs = '';
-  for (let lvl = 1; lvl <= 5; lvl++) {
-    const ratio = lvl / 5;
-    const pts = [];
-    for (let i = 0; i < N; i++) {
-      const [x, y] = point(i, ratio);
-      pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
-    }
-    webs += `<polygon points="${pts.join(' ')}" fill="none" stroke="rgba(18,118,118,0.18)" stroke-width="1"/>`;
-  }
+      const polyPts = [];
+      const dots = [];
+      for (let i = 0; i < N; i++) {
+        const ratio = (values[i] || 0) / 100;
+        const [x, y] = point(i, ratio);
+        polyPts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+        dots.push(`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="var(--retro-orange)"/>`);
+      }
 
-  let axes = '';
-  for (let i = 0; i < N; i++) {
-    const [x, y] = point(i, 1);
-    axes += `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="rgba(18,118,118,0.25)" stroke-width="1"/>`;
-  }
+      let lbls = '';
+      for (let i = 0; i < N; i++) {
+        const [x, y] = point(i, 1.18);
+        lbls += `<text class="radar-label" x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle">${escapeHtml(labels[i])}</text>`;
+      }
 
-  const polyPts = [];
-  const dots = [];
-  for (let i = 0; i < N; i++) {
-    const ratio = (values[i] || 0) / 100;
-    const [x, y] = point(i, ratio);
-    polyPts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
-    dots.push(`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="var(--retro-orange)"/>`);
-  }
-
-  let lbls = '';
-  for (let i = 0; i < N; i++) {
-    const [x, y] = point(i, 1.18);
-    lbls += `<text class="radar-label" x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle">${escapeHtml(labels[i])}</text>`;
-  }
-
-  return `
+      return `
     <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Radar des enjeux">
       ${webs}
       ${axes}
@@ -1759,17 +2188,18 @@ function buildRadarSVG() {
       ${lbls}
     </svg>
   `;
-}
+    }
 
-/* ==========================================================
-   INIT
-   ========================================================== */
-// Détection Netlify : sonde la fonction proxy au démarrage
-fetch('/.netlify/functions/proxy', { method: 'OPTIONS' })
-  .then(r => { if (r.status !== 404) { state.netlifyMode = true; render(); } })
-  .catch(() => {});
+    /* ==========================================================
+       INIT
+       ========================================================== */
+    // Détection Netlify : sonde la fonction proxy au démarrage
+    fetch('/.netlify/functions/proxy', { method: 'OPTIONS' })
+      .then(r => { if (r.status !== 404) { state.netlifyMode = true; render(); } })
+      .catch(() => { });
 
-render();
-</script>
+    render();
+  </script>
 </body>
+
 </html>

@@ -1017,12 +1017,12 @@ FORMAT DE SORTIE
         ], score: { A: 1, B: 2, C: 3, D: 4 }
       },
       E2: {
-        type: 'choix', text: "L'IA peut adapter le contenu pédagogique à chaque élève (rythme, niveau, style d'apprentissage). Cette personnalisation vous inspire surtout...",
+        type: 'choix', text: "L'IA peut adapter le contenu pédagogique à chaque élève (rythme, niveau, style d'apprentissage)sans que l'enseignant ne doive s'occuper de rien. Cette personnalisation vous inspire surtout...",
         options: [
           "De l'enthousiasme — c'est une promesse de différenciation enfin accessible",
           "De la prudence — elle risque de renforcer les inégalités selon l'accès aux outils",
           "De la méfiance — je ne sais pas sur quelles données ni selon quels critères elle opère",
-          "Du scepticisme — la relation pédagogique ne se réduit pas à de la personnalisation algorithmique, surtout si l'enseignantt(e) ne maitrise pas les outils"
+          "Du scepticisme — la relation pédagogique ne se réduit pas à de la personnalisation algorithmique, surtout si l'enseignantt(e) ne maitrise pas les outils d'IA"
         ], score: { A: 1, B: 3, C: 3, D: 3 }
       },
       E3: {
@@ -1668,7 +1668,7 @@ FORMAT DE SORTIE
       app.innerHTML = `
     <div class="ecran">
       <div class="surtitre">Formation FWB — Enseignement secondaire</div>
-      <h1>Quel utilisateur d'IA es-tu&nbsp;?</h1>
+      <h1>Quel utilisateur·rice d'IA es-tu?</h1>
       <div class="surtitre" style="color:var(--retro-teal);">Analysez votre rapport à l'IA</div>
 
       <p class="intro-text" style="margin-top:24px;">
@@ -1888,7 +1888,6 @@ FORMAT DE SORTIE
         ${boussoleQuestion('B1_dominants', "Les 2 ou 3 enjeux sur lesquels je me sens le plus informé·e ou le plus mobilisé·e :")}
         ${boussoleQuestion('B2_angles_morts', "Les 2 ou 3 enjeux que j'ai trouvés les plus inconnus, les plus difficiles, ou que j'évite — mes angles morts :")}
         ${boussoleQuestion('B3_attente', "Ce que je viens chercher dans cette formation — en une phrase concrète :")}
-        ${boussoleQuestion('B4_question', "Ce que je dépose sur le mur collaboratif : une question que j'apporte et que je veux voir traitée :")}
       </div>
       ${separateur('⚘')}
       <div class="button-row">
